@@ -31,6 +31,7 @@ const TabQuizScreen = () => {
             style={styles.buttonGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
+            opacity={0.9}
           >
             <Text style={styles.buttonText}>History Quiz</Text>
           </LinearGradient>
@@ -44,6 +45,7 @@ const TabQuizScreen = () => {
             style={styles.buttonGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
+            opacity={0.9}
           >
             <Text style={styles.buttonText}>Study Quiz</Text>
           </LinearGradient>
