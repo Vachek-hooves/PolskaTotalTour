@@ -14,6 +14,8 @@ import {
   StackDishScreen,
   StackPersonsScreen,
   StackArchitectureScreen,
+  StackQuizCitiesPlayScreen,
+  StackQuizHistoryPlayScreen,
 } from './screen/stack';
 
 const Stack = createNativeStackNavigator();
@@ -82,8 +84,14 @@ function App() {
             name="StackArchitectureScreen"
             component={StackArchitectureScreen}
           />
-          
-          
+          <Stack.Screen
+            name="StackQuizCitiesPlayScreen"
+            component={StackQuizCitiesPlayScreen}
+          />
+          <Stack.Screen
+            name="StackQuizHistoryPlayScreen"
+            component={StackQuizHistoryPlayScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </AppContextProvider>
