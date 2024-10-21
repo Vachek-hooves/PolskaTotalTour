@@ -44,23 +44,25 @@ const StackQuizCitiesScreen = () => {
       {!showResult ? (
         <View style={styles.quizContainer}>
           <Text style={styles.questionText}>{currentQuestion.question}</Text>
-          {currentQuestion.options.map((option, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.button}
-              onPress={() => handleAnswer(option)}
-            >
-              <LinearGradient
-                colors={['#8A2BE2', '#191970']}
-                style={styles.buttonGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                opacity={0.9}
+          <View style={styles.optionsContainer}>
+            {currentQuestion.options.map((option, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.button}
+                onPress={() => handleAnswer(option)}
               >
-                <Text style={styles.buttonText}>{option}</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          ))}
+                <LinearGradient
+                  colors={['#8A2BE2', '#191970']}
+                  style={styles.buttonGradient}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  opacity={0.9}
+                >
+                  <Text style={styles.buttonText}>{option}</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            ))}
+          </View>
           <Text style={styles.progressText}>
             Question {currentQuestionIndex + 1} of {citiesQuizData.length}
           </Text>
@@ -108,8 +110,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#191970',
   },
-  button: {
+  optionsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
     width: '100%',
+  },
+  button: {
+    width: '48%', // Slightly less than 50% to account for space between buttons
     height: 60,
     marginBottom: 15,
     borderRadius: 30,
@@ -127,10 +135,12 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     textTransform: 'uppercase',
     letterSpacing: 1,
+    textAlign: 'center',
+    paddingHorizontal: 5,
   },
   progressText: {
     marginTop: 20,
