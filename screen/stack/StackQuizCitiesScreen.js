@@ -1,19 +1,17 @@
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import React from 'react';
 
-const StackQuizHistoryScreen = () => {
+const StackQuizStudyScreen = () => {
   return (
     <ImageBackground
-      source={require('../../assets/gamePlay/quiz/bg/history.png')}
+      source={require('../../assets/gamePlay/quiz/bg/cities.png')}
       resizeMode="cover"
       style={styles.container}
-    >
-
-    </ImageBackground>
+    ></ImageBackground>
   );
 };
 
-export default StackQuizHistoryScreen;
+export default StackQuizStudyScreen;
 
 const styles = StyleSheet.create({
   container: {

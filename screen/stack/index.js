@@ -1,4 +1,4 @@
-import StackQuizStudyScreen from "./StackQuizStudyScreen";
+import StackQuizStudyScreen from "./StackQuizCitiesScreen";
 import StackQuizHistoryScreen from "./StackQuizHistoryScreen";
 
 export {StackQuizStudyScreen, StackQuizHistoryScreen};

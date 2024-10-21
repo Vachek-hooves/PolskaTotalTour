@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const StackQuizStudyScreen = () => {
+const TabPolishGuide = () => {
   return (
     <View>
-      <Text>StackQuizStudyScreen</Text>
+      <Text>TabPolishGuide</Text>
     </View>
   )
 }
 
-export default StackQuizStudyScreen
+export default TabPolishGuide
 
 const styles = StyleSheet.create({})
