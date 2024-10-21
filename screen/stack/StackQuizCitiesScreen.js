@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions } from 'react-native';
 import { useAppContext } from '../../store/context';
+import LinearGradient from 'react-native-linear-gradient';
+
+const { width, height } = Dimensions.get('window');
 
 const StackQuizCitiesScreen = () => {
   const { citiesQuizData } = useAppContext();
@@ -44,10 +47,18 @@ const StackQuizCitiesScreen = () => {
           {currentQuestion.options.map((option, index) => (
             <TouchableOpacity
               key={index}
-              style={styles.optionButton}
+              style={styles.button}
               onPress={() => handleAnswer(option)}
             >
-              <Text style={styles.optionText}>{option}</Text>
+              <LinearGradient
+                colors={['#8A2BE2', '#191970']}
+                style={styles.buttonGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                opacity={0.9}
+              >
+                <Text style={styles.buttonText}>{option}</Text>
+              </LinearGradient>
             </TouchableOpacity>
           ))}
           <Text style={styles.progressText}>
@@ -58,8 +69,16 @@ const StackQuizCitiesScreen = () => {
         <View style={styles.resultContainer}>
           <Text style={styles.resultText}>Quiz Completed!</Text>
           <Text style={styles.scoreText}>Your Score: {score}</Text>
-          <TouchableOpacity style={styles.restartButton} onPress={restartQuiz}>
-            <Text style={styles.restartButtonText}>Restart Quiz</Text>
+          <TouchableOpacity style={styles.button} onPress={restartQuiz}>
+            <LinearGradient
+              colors={['#8A2BE2', '#191970']}
+              style={styles.buttonGradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              opacity={0.9}
+            >
+              <Text style={styles.buttonText}>Restart Quiz</Text>
+            </LinearGradient>
           </TouchableOpacity>
         </View>
       )}
@@ -79,7 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     padding: 20,
     borderRadius: 10,
-    width: '90%',
+    width: width * 0.9,
     alignItems: 'center',
   },
   questionText: {
@@ -87,44 +106,53 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+    color: '#191970',
   },
-  optionButton: {
-    backgroundColor: '#4facfe',
-    padding: 10,
-    borderRadius: 5,
-    marginVertical: 5,
+  button: {
     width: '100%',
+    height: 60,
+    marginBottom: 15,
+    borderRadius: 30,
+    overflow: 'hidden',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
-  optionText: {
-    color: 'white',
-    textAlign: 'center',
+  buttonGradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   progressText: {
     marginTop: 20,
     fontSize: 14,
+    color: '#191970',
   },
   resultContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
+    width: width * 0.9,
   },
   resultText: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#191970',
   },
   scoreText: {
     fontSize: 18,
     marginBottom: 20,
-  },
-  restartButton: {
-    backgroundColor: '#4facfe',
-    padding: 10,
-    borderRadius: 5,
-  },
-  restartButtonText: {
-    color: 'white',
-    fontSize: 16,
+    color: '#191970',
   },
 });
