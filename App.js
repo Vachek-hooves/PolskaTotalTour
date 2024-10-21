@@ -8,7 +8,13 @@ import TabHomeScreen from './screen/tab/TabHomeScreen';
 import LinearGradient from 'react-native-linear-gradient';
 import { View } from 'react-native';
 import { TabPolishExplorer, TabQuizScreen } from './screen/tab';
-import { StackQuizHistoryScreen, StackQuizStudyScreen } from './screen/stack';
+import {
+  StackQuizHistoryScreen,
+  StackQuizStudyScreen,
+  StackDishScreen,
+  StackPersonsScreen,
+  StackArchitectureScreen,
+} from './screen/stack';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -67,6 +73,17 @@ function App() {
             name="StackQuizHistoryScreen"
             component={StackQuizHistoryScreen}
           />
+          <Stack.Screen name="StackDishScreen" component={StackDishScreen} />
+          <Stack.Screen
+            name="StackPersonsScreen"
+            component={StackPersonsScreen}
+          />
+          <Stack.Screen
+            name="StackArchitectureScreen"
+            component={StackArchitectureScreen}
+          />
+          
+          
         </Stack.Navigator>
       </NavigationContainer>
     </AppContextProvider>

@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    height: 60,
+    height: 90,
     marginBottom: 20,
     borderRadius: 30,
     overflow: 'hidden',
