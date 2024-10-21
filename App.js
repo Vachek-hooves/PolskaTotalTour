@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {AppContextProvider} from './store/context';
 import WelcomeScreen from './screen/WelcomeScreen';
-import TabHomeScreen from './screen/TabHomeScreen';
+import TabHomeScreen from './screen/tab/TabHomeScreen';
 import LinearGradient from 'react-native-linear-gradient';
 import {View} from 'react-native';
 
