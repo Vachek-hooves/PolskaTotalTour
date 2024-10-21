@@ -7,7 +7,7 @@ import WelcomeScreen from './screen/WelcomeScreen';
 import TabHomeScreen from './screen/tab/TabHomeScreen';
 import LinearGradient from 'react-native-linear-gradient';
 import { View } from 'react-native';
-import { TabPolishGuideScreen, TabQuizScreen } from './screen/tab';
+import { TabPolishExplorer, TabQuizScreen } from './screen/tab';
 import { StackQuizHistoryScreen, StackQuizStudyScreen } from './screen/stack';
 
 const Stack = createNativeStackNavigator();
@@ -47,10 +47,7 @@ const TabNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="TabPolishGuideScreen"
-        component={TabPolishGuideScreen}
-      />
+      <Tab.Screen name="TabPolishExplorer" component={TabPolishExplorer} />
     </Tab.Navigator>
   );
 };

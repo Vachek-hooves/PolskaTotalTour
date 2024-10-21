@@ -3,7 +3,7 @@ import TabQuizScreen from './TabQuizScreen';
 import TabDishScreen from './TabDishScreen';
 import TabPersonsScreen from './TabPersonsScreen';
 import TabArchitectureScreen from './TabArchitectureScreen';
-import TabPolishGuideScreen from './TabPolishGuideScreen';
+import TabPolishExplorer from './TabPolishExplorer';
 
 export {
   TabHomeScreen,
@@ -11,5 +11,5 @@ export {
   TabDishScreen,
   TabPersonsScreen,
   TabArchitectureScreen,
-  TabPolishGuideScreen,
+  TabPolishExplorer,
 };
