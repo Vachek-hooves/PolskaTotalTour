@@ -33,7 +33,7 @@ const TabQuizScreen = () => {
             end={{ x: 1, y: 0 }}
             opacity={0.9}
           >
-            <Text style={styles.buttonText}>History Quiz</Text>
+            <Text style={styles.buttonText}>History</Text>
           </LinearGradient>
         </TouchableOpacity>
         <TouchableOpacity
@@ -47,7 +47,7 @@ const TabQuizScreen = () => {
             end={{ x: 1, y: 0 }}
             opacity={0.9}
           >
-            <Text style={styles.buttonText}>Study Quiz</Text>
+            <Text style={styles.buttonText}>Study of Cities</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
