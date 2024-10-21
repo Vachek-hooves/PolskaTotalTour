@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const TabPolishGuide = () => {
+const TabPolishGuideScreen = () => {
   return (
     <View>
       <Text>TabPolishGuide</Text>
@@ -9,6 +9,6 @@ const TabPolishGuide = () => {
   )
 }
 
-export default TabPolishGuide
+export default TabPolishGuideScreen
 
 const styles = StyleSheet.create({})
