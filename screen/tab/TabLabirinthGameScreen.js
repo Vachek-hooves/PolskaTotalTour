@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Modal, ImageBackground, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Modal, ImageBackground, SafeAreaView, Platform } from 'react-native';
 import { architecturePoland } from '../../data/architecturePoland';
 import tree from '../../assets/gamePlay/labyrinth/tree.png'
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const GRID_SIZE = 11;
-const CELL_SIZE = width / GRID_SIZE;
+const CELL_SIZE = Math.floor(width * 0.8 / GRID_SIZE); // Reduced to 80% of screen width
+const TAB_BAR_HEIGHT = 50; // Approximate height of the tab bar
+const CONTROLS_HEIGHT = 150; // Approximate height for controls
 
 const generateMaze = () => {
   const maze = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
@@ -86,33 +88,42 @@ const TabLabirinthGameScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView></SafeAreaView>
-      <Text style={styles.title}>Labyrinth Game</Text>
-      <ImageBackground source={require('../../assets/gamePlay/labyrinth/map.png')} style={styles.map} resizeMode='cover'>
-      <View style={styles.maze}>
-        {maze.map((row, y) => (
-          <View key={y} style={styles.row}>
-            {row.map((cell, x) => renderCell(cell, x, y))}
-          </View>
-        ))}
-      </View>
-        </ImageBackground>
-      <View style={styles.controls}>
-        <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, -1)}>
-          <Text style={styles.buttonText}>Up</Text>
-        </TouchableOpacity>
-        <View style={styles.horizontalControls}>
-          <TouchableOpacity style={styles.button} onPress={() => movePlayer(-1, 0)}>
-            <Text style={styles.buttonText}>Left</Text>
+    <SafeAreaView style={styles.container}>
+      {/* <Text style={styles.title}>Labyrinth Game</Text> */}
+      <View style={styles.gameArea}>
+        <View style={styles.mapContainer}>
+          <ImageBackground 
+            source={require('../../assets/gamePlay/labyrinth/map.png')} 
+            style={styles.map} 
+            resizeMode='cover'
+          >
+            <View style={styles.mazeOverlay}>
+              <View style={styles.maze}>
+                {maze.map((row, y) => (
+                  <View key={y} style={styles.row}>
+                    {row.map((cell, x) => renderCell(cell, x, y))}
+                  </View>
+                ))}
+              </View>
+            </View>
+          </ImageBackground>
+        </View>
+        <View style={styles.controls}>
+          <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, -1)}>
+            <Text style={styles.buttonText}>Up</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => movePlayer(1, 0)}>
-            <Text style={styles.buttonText}>Right</Text>
+          <View style={styles.horizontalControls}>
+            <TouchableOpacity style={styles.button} onPress={() => movePlayer(-1, 0)}>
+              <Text style={styles.buttonText}>Left</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => movePlayer(1, 0)}>
+              <Text style={styles.buttonText}>Right</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, 1)}>
+            <Text style={styles.buttonText}>Down</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, 1)}>
-          <Text style={styles.buttonText}>Down</Text>
-        </TouchableOpacity>
       </View>
       {gameWon && (
         <View style={styles.overlay}>
@@ -149,7 +160,7 @@ const TabLabirinthGameScreen = () => {
           )}
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -157,25 +168,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#F0F0F0',
-    paddingTop: 40,
-    
-  },
-  map: {
-    width: width,
-    height: '90%',
-    borderRadius: 18,
-    overflow: 'hidden'
+    paddingTop: Platform.OS === 'android' ? 25 : 0,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginVertical: 10,
+  },
+  gameArea: {
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingBottom: TAB_BAR_HEIGHT,
+  },
+  mapContainer: {
+    width: width * 0.9,
+    height: width * 0.9 * (16/9), // Maintain 9:16 aspect ratio
+    maxHeight: height - CONTROLS_HEIGHT - TAB_BAR_HEIGHT - 100, // Adjust based on other elements
+    overflow: 'hidden',
+    borderRadius: 18,
+  },
+  map: {
+    width: '100%',
+    height: '100%',
+  },
+  mazeOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   maze: {
-    // borderWidth: 2,
-    borderColor: '#000',
+    width: CELL_SIZE * GRID_SIZE,
+    height: CELL_SIZE * GRID_SIZE,
   },
   row: {
     flexDirection: 'row',
@@ -183,21 +210,28 @@ const styles = StyleSheet.create({
   cell: {
     width: CELL_SIZE,
     height: CELL_SIZE,
-    // borderWidth: 1,
-    borderColor: '#CCC',
+    borderColor: 'rgba(204, 204, 204, 0.3)',
   },
   wall: {
-    backgroundColor: '#333',
-    borderRadius:18
+    backgroundColor: 'rgba(51, 51, 51, 0.7)',
+    borderRadius: 6,
   },
   player: {
-    backgroundColor: 'blue',
+    backgroundColor: 'rgba(0, 0, 255, 0.7)',
+    borderRadius: CELL_SIZE / 2,
   },
   end: {
-    backgroundColor: 'green',
+    backgroundColor: 'rgba(0, 255, 0, 0.7)',
+    borderRadius: 6,
+  },
+  landmark: {
+    backgroundColor: 'rgba(255, 255, 0, 0.7)',
+    borderRadius: 6,
   },
   controls: {
-    // marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   horizontalControls: {
     flexDirection: 'row',
@@ -229,9 +263,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 20,
-  },
-  landmark: {
-    backgroundColor: 'yellow',
   },
   modalView: {
     margin: 20,
