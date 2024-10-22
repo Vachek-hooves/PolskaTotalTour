@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Modal, ImageBackground, SafeAreaView, Platform } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Modal, ImageBackground, SafeAreaView, Platform, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { architecturePoland } from '../../data/architecturePoland';
 import tree from '../../assets/gamePlay/labyrinth/tree.png'
+import traveller from '../../assets/gamePlay/labyrinth/traveler.png'
 
 const { width, height } = Dimensions.get('window');
 const GRID_SIZE = 11;
@@ -79,12 +80,17 @@ const TabLabirinthGameScreen = () => {
         key={`${x}-${y}`}
         style={[
           styles.cell,
-          cell === 1 && styles.wall,
           isPlayer && styles.player,
           isEnd && styles.end,
-          typeof cell === 'object' && styles.landmark,
         ]}
-      />
+      >
+        {cell === 1 && <Image source={tree} style={styles.treeIcon} />}
+        {typeof cell === 'object' && (
+          <Image source={cell.image} style={styles.landmarkIcon} />
+        )}
+        {isPlayer && <Image source={traveller} style={styles.playerIcon} />}
+        {isEnd && <View style={styles.endIcon} />}
+      </View>
     );
   };
 
@@ -96,7 +102,7 @@ const TabLabirinthGameScreen = () => {
       end={{ x: 1, y: 1 }}
     >
       <SafeAreaView style={styles.safeArea}>
-        {/* <Text style={styles.title}>Labyrinth Game</Text> */}
+        <Text style={styles.title}>Labyrinth Game</Text>
         <View style={styles.gameArea}>
           <View style={styles.mapContainer}>
             <ImageBackground 
@@ -221,23 +227,32 @@ const styles = StyleSheet.create({
   cell: {
     width: CELL_SIZE,
     height: CELL_SIZE,
-    borderColor: 'rgba(204, 204, 204, 0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  wall: {
-    backgroundColor: 'rgba(51, 51, 51, 0.7)',
-    borderRadius: 6,
+  treeIcon: {
+    width: CELL_SIZE * 1.6,
+    height: CELL_SIZE * 1.6,
+    resizeMode: 'contain',
   },
-  player: {
+  landmarkIcon: {
+    width: CELL_SIZE * 1.6,
+    height: CELL_SIZE * 1.6,
+    resizeMode: 'contain',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  playerIcon: {
+    width: CELL_SIZE * 1.6,
+    height: CELL_SIZE * 1.6,
+    borderRadius: (CELL_SIZE * 0.6) / 2,
     backgroundColor: 'rgba(0, 0, 255, 0.7)',
-    borderRadius: CELL_SIZE / 2,
   },
-  end: {
-    backgroundColor: 'rgba(0, 255, 0, 0.7)',
+  endIcon: {
+    width: CELL_SIZE * 0.6,
+    height: CELL_SIZE * 0.6,
     borderRadius: 6,
-  },
-  landmark: {
-    backgroundColor: 'rgba(255, 255, 0, 0.7)',
-    borderRadius: 6,
+    // backgroundColor: 'rgba(0, 255, 0, 0.7)',
   },
   controls: {
     justifyContent: 'center',
