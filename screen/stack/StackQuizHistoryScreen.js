@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions, Animated, ScrollView } from 'react-native';
 import { useAppContext } from '../../store/context';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -101,83 +101,85 @@ const StackQuizHistoryScreen = () => {
       resizeMode="cover"
       style={styles.container}
     >
-      {!showResult ? (
-        <Animated.View 
-          style={[
-            styles.quizContainer,
-            {
-              opacity: fadeAnim,
-              transform: [{ scale: scaleAnim }],
-            },
-          ]}
-        >
-          <Text style={styles.questionText}>{currentQuestion.question}</Text>
-          <View style={styles.optionsContainer}>
-            {currentQuestion.options.map((option, index) => (
-              <Animated.View
-                key={index}
-                style={{
-                  opacity: optionAnimations[index] || new Animated.Value(1),
-                  transform: [
-                    {
-                      translateY: (optionAnimations[index] || new Animated.Value(1)).interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [50, 0],
-                      }),
-                    },
-                    {
-                      scale: optionAnimations[index] || new Animated.Value(1),
-                    },
-                  ],
-                }}
-              >
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => handleAnswer(option)}
-                  disabled={selectedAnswer !== null}
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        {!showResult ? (
+          <Animated.View 
+            style={[
+              styles.quizContainer,
+              {
+                opacity: fadeAnim,
+                transform: [{ scale: scaleAnim }],
+              },
+            ]}
+          >
+            <Text style={styles.questionText}>{currentQuestion.question}</Text>
+            <View style={styles.optionsContainer}>
+              {currentQuestion.options.map((option, index) => (
+                <Animated.View
+                  key={index}
+                  style={{
+                    opacity: optionAnimations[index] || new Animated.Value(1),
+                    transform: [
+                      {
+                        translateY: (optionAnimations[index] || new Animated.Value(1)).interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [50, 0],
+                        }),
+                      },
+                      {
+                        scale: optionAnimations[index] || new Animated.Value(1),
+                      },
+                    ],
+                  }}
                 >
-                  <LinearGradient
-                    colors={getButtonColors(option)}
-                    style={styles.buttonGradient}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    opacity={0.9}
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => handleAnswer(option)}
+                    disabled={selectedAnswer !== null}
                   >
-                    <Text style={styles.buttonText}>{option}</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              </Animated.View>
-            ))}
-          </View>
-          <Text style={styles.progressText}>
-            Question {currentQuestionIndex + 1} of {polishHistoryQuizData.length}
-          </Text>
-        </Animated.View>
-      ) : (
-        <Animated.View 
-          style={[
-            styles.resultContainer,
-            {
-              opacity: fadeAnim,
-              transform: [{ scale: scaleAnim }],
-            },
-          ]}
-        >
-          <Text style={styles.resultText}>Quiz Completed!</Text>
-          <Text style={styles.scoreText}>Your Score: {score}</Text>
-          <TouchableOpacity style={styles.button} onPress={restartQuiz}>
-            <LinearGradient
-              colors={['#8A2BE2', '#191970']}
-              style={styles.buttonGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              opacity={0.9}
-            >
-              <Text style={styles.buttonText}>Restart Quiz</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </Animated.View>
-      )}
+                    <LinearGradient
+                      colors={getButtonColors(option)}
+                      style={styles.buttonGradient}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      opacity={0.9}
+                    >
+                      <Text style={styles.buttonText}>{option}</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </Animated.View>
+              ))}
+            </View>
+            <Text style={styles.progressText}>
+              Question {currentQuestionIndex + 1} of {polishHistoryQuizData.length}
+            </Text>
+          </Animated.View>
+        ) : (
+          <Animated.View 
+            style={[
+              styles.resultContainer,
+              {
+                opacity: fadeAnim,
+                transform: [{ scale: scaleAnim }],
+              },
+            ]}
+          >
+            <Text style={styles.resultText}>Quiz Completed!</Text>
+            <Text style={styles.scoreText}>Your Score: {score}</Text>
+            <TouchableOpacity style={styles.button} onPress={restartQuiz}>
+              <LinearGradient
+                colors={['#8A2BE2', '#191970']}
+                style={styles.buttonGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                opacity={0.9}
+              >
+                <Text style={styles.buttonText}>Restart Quiz</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+      </ScrollView>
     </ImageBackground>
   );
 };
@@ -187,8 +189,12 @@ export default StackQuizHistoryScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 20,
   },
   quizContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -196,7 +202,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: width * 0.9,
     alignItems: 'center',
-    paddingVertical: '25%'
   },
   questionText: {
     fontSize: 20,
@@ -206,17 +211,13 @@ const styles = StyleSheet.create({
     color: '#FFFFFF'
   },
   optionsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
     width: '100%',
-    paddingVertical: 30
+    paddingVertical: 10,
   },
   button: {
-    width: width * 0.4,
-    height: 60,
+    width: '100%',
     marginBottom: 15,
-    borderRadius: 30,
+    borderRadius: 15,
     overflow: 'hidden',
     elevation: 5,
     shadowColor: '#000',
@@ -227,18 +228,14 @@ const styles = StyleSheet.create({
     borderColor: '#FFFFFF'
   },
   buttonGradient: {
-    flex: 1,
-    justifyContent: 'center',
+    padding: 15,
     alignItems: 'center',
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
     textAlign: 'center',
-    paddingHorizontal: 5,
   },
   progressText: {
     marginTop: 20,
