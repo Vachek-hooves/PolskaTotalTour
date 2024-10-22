@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions, Animated } from 'react-native';
 import { useAppContext } from '../../store/context';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -10,30 +10,67 @@ const StackQuizCitiesScreen = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [scaleAnim] = useState(new Animated.Value(0.5));
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
 
   const currentQuestion = citiesQuizData[currentQuestionIndex];
 
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        friction: 4,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [currentQuestionIndex]);
+
   const handleAnswer = (selectedAnswer) => {
-    if (selectedAnswer === currentQuestion.answer) {
+    setSelectedAnswer(selectedAnswer);
+    const isCorrect = selectedAnswer === currentQuestion.answer;
+    setIsAnswerCorrect(isCorrect);
+
+    if (isCorrect) {
       setScore(score + currentQuestion.score);
     }
 
-    if (currentQuestionIndex + 1 < citiesQuizData.length) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
-      setShowResult(true);
-    }
+    // Delay moving to the next question to show feedback
+    setTimeout(() => {
+      if (currentQuestionIndex + 1 < citiesQuizData.length) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setSelectedAnswer(null);
+        setIsAnswerCorrect(null);
+      } else {
+        setShowResult(true);
+      }
+    }, 1000);
   };
 
   const restartQuiz = () => {
     setCurrentQuestionIndex(0);
     setScore(0);
     setShowResult(false);
+    setSelectedAnswer(null);
+    setIsAnswerCorrect(null);
   };
 
   if (!currentQuestion) {
     return <Text>Loading...</Text>;
   }
+
+  const getButtonColors = (option) => {
+    if (selectedAnswer === option) {
+      return isAnswerCorrect ? ['#4CAF50', '#45a049'] : ['#FF6347', '#FF4500'];
+    }
+    return ['#8A2BE2', '#191970'];
+  };
 
   return (
     <ImageBackground
@@ -42,33 +79,64 @@ const StackQuizCitiesScreen = () => {
       style={styles.container}
     >
       {!showResult ? (
-        <View style={styles.quizContainer}>
+        <Animated.View 
+          style={[
+            styles.quizContainer,
+            {
+              opacity: fadeAnim,
+              transform: [{ scale: scaleAnim }],
+            },
+          ]}
+        >
           <Text style={styles.questionText}>{currentQuestion.question}</Text>
           <View style={styles.optionsContainer}>
             {currentQuestion.options.map((option, index) => (
-              <TouchableOpacity
+              <Animated.View
                 key={index}
-                style={styles.button}
-                onPress={() => handleAnswer(option)}
+                style={{
+                  opacity: fadeAnim,
+                  transform: [
+                    {
+                      translateY: fadeAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [50, 0],
+                      }),
+                    },
+                  ],
+                }}
               >
-                <LinearGradient
-                  colors={['#8A2BE2', '#191970']}
-                  style={styles.buttonGradient}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  opacity={0.9}
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => handleAnswer(option)}
+                  disabled={selectedAnswer !== null}
                 >
-                  <Text style={styles.buttonText}>{option}</Text>
-                </LinearGradient>
-              </TouchableOpacity>
+                  <LinearGradient
+                    colors={getButtonColors(option)}
+                    style={styles.buttonGradient}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    opacity={0.9}
+                  >
+                    <Text style={styles.buttonText}>{option}</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </Animated.View>
             ))}
           </View>
           <Text style={styles.progressText}>
             Question {currentQuestionIndex + 1} of {citiesQuizData.length}
           </Text>
-        </View>
+        </Animated.View>
       ) : (
-        <View style={styles.resultContainer}>
+        <Animated.View 
+          style={[
+            styles.resultContainer,
+            {
+              opacity: fadeAnim,
+              transform: [{ scale: scaleAnim }],
+            },
+          ]}
+        >
           <Text style={styles.resultText}>Quiz Completed!</Text>
           <Text style={styles.scoreText}>Your Score: {score}</Text>
           <TouchableOpacity style={styles.button} onPress={restartQuiz}>
@@ -82,7 +150,7 @@ const StackQuizCitiesScreen = () => {
               <Text style={styles.buttonText}>Restart Quiz</Text>
             </LinearGradient>
           </TouchableOpacity>
-        </View>
+        </Animated.View>
       )}
     </ImageBackground>
   );
@@ -117,7 +185,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    width: '48%', // Slightly less than 50% to account for space between buttons
+    width: width * 0.4,
     height: 60,
     marginBottom: 15,
     borderRadius: 30,
@@ -145,10 +213,10 @@ const styles = StyleSheet.create({
   progressText: {
     marginTop: 20,
     fontSize: 14,
-    color: '#191970',
+    color: '#FFFFFF',
   },
   resultContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: 'rgba(25, 25, 112, 0.8)', // Dark blue with higher opacity
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
@@ -158,11 +226,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#191970',
+    color: '#FFFFFF',
   },
   scoreText: {
     fontSize: 18,
     marginBottom: 20,
-    color: '#191970',
+    color: '#FFFFFF',
   },
 });
