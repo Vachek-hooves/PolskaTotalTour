@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
 
-const StackQuizCitiesScreen = () => {
+const StackQuizCitiesScreen = ({ navigation }) => {
   const { citiesQuizData } = useAppContext();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -165,6 +165,17 @@ const StackQuizCitiesScreen = () => {
         >
           <Text style={styles.resultText}>Quiz Completed!</Text>
           <Text style={styles.scoreText}>Your Score: {score}</Text>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TabQuizScreen')}>
+            <LinearGradient
+              colors={['#8A2BE2', '#191970']}
+              style={styles.buttonGradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              opacity={0.9}
+            >
+              <Text style={styles.buttonText}>Menu</Text>
+            </LinearGradient>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={restartQuiz}>
             <LinearGradient
               colors={['#8A2BE2', '#191970']}
