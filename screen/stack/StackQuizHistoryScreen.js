@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: width * 0.9,
     alignItems: 'center',
+    paddingVertical: '25%'
   },
   questionText: {
     fontSize: 20,
