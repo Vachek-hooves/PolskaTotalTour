@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Modal, ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Modal, ImageBackground, SafeAreaView } from 'react-native';
 import { architecturePoland } from '../../data/architecturePoland';
 import tree from '../../assets/gamePlay/labyrinth/tree.png'
 
@@ -87,9 +87,9 @@ const TabLabirinthGameScreen = () => {
 
   return (
     <View style={styles.container}>
+      <SafeAreaView></SafeAreaView>
       <Text style={styles.title}>Labyrinth Game</Text>
-      <ImageBackground source={require('../../assets/gamePlay/labyrinth/map.png')} style={styles.map}>
-      </ImageBackground>
+      <ImageBackground source={require('../../assets/gamePlay/labyrinth/map.png')} style={styles.map} resizeMode='cover'>
       <View style={styles.maze}>
         {maze.map((row, y) => (
           <View key={y} style={styles.row}>
@@ -97,6 +97,7 @@ const TabLabirinthGameScreen = () => {
           </View>
         ))}
       </View>
+        </ImageBackground>
       <View style={styles.controls}>
         <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, -1)}>
           <Text style={styles.buttonText}>Up</Text>
@@ -158,6 +159,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#F0F0F0',
+    paddingTop: 40,
+    
+  },
+  map: {
+    width: width,
+    height: '90%',
+    borderRadius: 18,
+    overflow: 'hidden'
   },
   title: {
     fontSize: 24,
@@ -188,7 +197,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
   },
   controls: {
-    marginTop: 20,
+    // marginTop: 20,
   },
   horizontalControls: {
     flexDirection: 'row',
