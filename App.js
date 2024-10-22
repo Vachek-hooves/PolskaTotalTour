@@ -17,6 +17,7 @@ import {
   StackQuizCitiesPlayScreen,
   StackQuizHistoryPlayScreen,
 } from './screen/stack';
+import TabLabirinthGameScreen from './screen/tab/TabLabirinthGameScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -56,6 +57,10 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen name="TabPolishExplorer" component={TabPolishExplorer} />
+      <Tab.Screen
+        name="TabLabirinthGameScreen"
+        component={TabLabirinthGameScreen}
+      />
     </Tab.Navigator>
   );
 };
