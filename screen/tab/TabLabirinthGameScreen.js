@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Modal } from 'react-native';
+import { architecturePoland } from '../../data/architecturePoland';
 
 const { width } = Dimensions.get('window');
-const GRID_SIZE =11;
+const GRID_SIZE = 11;
 const CELL_SIZE = width / GRID_SIZE;
 
 const generateMaze = () => {
-  // Simple maze generation (you can implement a more complex algorithm)
   const maze = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
   for (let i = 0; i < GRID_SIZE; i++) {
     for (let j = 0; j < GRID_SIZE; j++) {
-      maze[i][j] = Math.random() > 0.3 ? 0 : 1; // 30% chance of being a wall
+      maze[i][j] = Math.random() > 0.2 ? 0 : 1; // 30% chance of being a wall
     }
   }
   maze[0][0] = 0; // Start
   maze[GRID_SIZE - 1][GRID_SIZE - 1] = 0; // End
+
+  // Place landmarks randomly
+  const landmarks = [...architecturePoland];
+  let landmarkCount = 0;
+  while (landmarks.length > 0 && landmarkCount < 5) {
+    const x = Math.floor(Math.random() * GRID_SIZE);
+    const y = Math.floor(Math.random() * GRID_SIZE);
+    if (maze[y][x] === 0 && !(x === 0 && y === 0) && !(x === GRID_SIZE - 1 && y === GRID_SIZE - 1)) {
+      maze[y][x] = landmarks.pop();
+      landmarkCount++;
+    }
+  }
+
   return maze;
 };
 
@@ -22,10 +35,17 @@ const TabLabirinthGameScreen = () => {
   const [maze, setMaze] = useState(generateMaze());
   const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
   const [gameWon, setGameWon] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentLandmark, setCurrentLandmark] = useState(null);
 
   useEffect(() => {
     if (playerPosition.x === GRID_SIZE - 1 && playerPosition.y === GRID_SIZE - 1) {
       setGameWon(true);
+    }
+    const cell = maze[playerPosition.y][playerPosition.x];
+    if (typeof cell === 'object') {
+      setCurrentLandmark(cell);
+      setModalVisible(true);
     }
   }, [playerPosition]);
 
@@ -36,7 +56,7 @@ const TabLabirinthGameScreen = () => {
     if (
       newX >= 0 && newX < GRID_SIZE &&
       newY >= 0 && newY < GRID_SIZE &&
-      maze[newY][newX] === 0
+      maze[newY][newX] !== 1
     ) {
       setPlayerPosition({ x: newX, y: newY });
     }
@@ -48,23 +68,31 @@ const TabLabirinthGameScreen = () => {
     setGameWon(false);
   };
 
+  const renderCell = (cell, x, y) => {
+    const isPlayer = x === playerPosition.x && y === playerPosition.y;
+    const isEnd = x === GRID_SIZE - 1 && y === GRID_SIZE - 1;
+
+    return (
+      <View
+        key={`${x}-${y}`}
+        style={[
+          styles.cell,
+          cell === 1 && styles.wall,
+          isPlayer && styles.player,
+          isEnd && styles.end,
+          typeof cell === 'object' && styles.landmark,
+        ]}
+      />
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Labyrinth Game</Text>
       <View style={styles.maze}>
         {maze.map((row, y) => (
           <View key={y} style={styles.row}>
-            {row.map((cell, x) => (
-              <View
-                key={`${x}-${y}`}
-                style={[
-                  styles.cell,
-                  cell === 1 && styles.wall,
-                  x === playerPosition.x && y === playerPosition.y && styles.player,
-                  x === GRID_SIZE - 1 && y === GRID_SIZE - 1 && styles.end,
-                ]}
-              />
-            ))}
+            {row.map((cell, x) => renderCell(cell, x, y))}
           </View>
         ))}
       </View>
@@ -92,6 +120,33 @@ const TabLabirinthGameScreen = () => {
           </TouchableOpacity>
         </View>
       )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalView}>
+          {currentLandmark && (
+            <>
+              <Text style={styles.modalTitle}>{currentLandmark.name}</Text>
+              <Text style={styles.modalText}>Location: {currentLandmark.location}</Text>
+              <Text style={styles.modalText}>{currentLandmark.description}</Text>
+              <Text style={styles.modalText}>Historical Significance: {currentLandmark.historicalSignificance}</Text>
+              <Text style={styles.modalTitle}>Interesting Facts:</Text>
+              {currentLandmark.interestingFacts.map((fact, index) => (
+                <Text key={index} style={styles.modalText}>• {fact}</Text>
+              ))}
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.buttonText}>Close</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -163,6 +218,36 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  landmark: {
+    backgroundColor: 'yellow',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
   },
 });
 
