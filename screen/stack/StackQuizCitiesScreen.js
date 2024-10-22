@@ -191,24 +191,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   quizContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     padding: 20,
     borderRadius: 10,
     width: width * 0.9,
     alignItems: 'center',
   },
   questionText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
     color: '#191970',
+    color:'#FFFFFF'
   },
   optionsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     width: '100%',
+    paddingVertical:30
   },
   button: {
     width: width * 0.4,
@@ -221,6 +224,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    borderWidth: 1,
+    borderColor: '#FFFFFF'
   },
   buttonGradient: {
     flex: 1,
