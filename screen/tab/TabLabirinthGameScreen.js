@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Modal, ImageBackground, SafeAreaView, Platform } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { architecturePoland } from '../../data/architecturePoland';
 import tree from '../../assets/gamePlay/labyrinth/tree.png'
 
@@ -13,7 +14,7 @@ const generateMaze = () => {
   const maze = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
   for (let i = 0; i < GRID_SIZE; i++) {
     for (let j = 0; j < GRID_SIZE; j++) {
-      maze[i][j] = Math.random() > 0.2 ? 0 : 1; // 20% chance of being a wall
+      maze[i][j] = Math.random() > 0.1 ? 0 : 1; // 20% chance of being a wall
     }
   }
   maze[0][0] = 0; // Start
@@ -88,43 +89,50 @@ const TabLabirinthGameScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* <Text style={styles.title}>Labyrinth Game</Text> */}
-      <View style={styles.gameArea}>
-        <View style={styles.mapContainer}>
-          <ImageBackground 
-            source={require('../../assets/gamePlay/labyrinth/map.png')} 
-            style={styles.map} 
-            resizeMode='cover'
-          >
-            <View style={styles.mazeOverlay}>
-              <View style={styles.maze}>
-                {maze.map((row, y) => (
-                  <View key={y} style={styles.row}>
-                    {row.map((cell, x) => renderCell(cell, x, y))}
-                  </View>
-                ))}
+    <LinearGradient
+      colors={['#8A2BE2', '#191970']}
+      style={styles.container}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        {/* <Text style={styles.title}>Labyrinth Game</Text> */}
+        <View style={styles.gameArea}>
+          <View style={styles.mapContainer}>
+            <ImageBackground 
+              source={require('../../assets/gamePlay/labyrinth/map.png')} 
+              style={styles.map} 
+              resizeMode='cover'
+            >
+              <View style={styles.mazeOverlay}>
+                <View style={styles.maze}>
+                  {maze.map((row, y) => (
+                    <View key={y} style={styles.row}>
+                      {row.map((cell, x) => renderCell(cell, x, y))}
+                    </View>
+                  ))}
+                </View>
               </View>
-            </View>
-          </ImageBackground>
-        </View>
-        <View style={styles.controls}>
-          <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, -1)}>
-            <Text style={styles.buttonText}>Up</Text>
-          </TouchableOpacity>
-          <View style={styles.horizontalControls}>
-            <TouchableOpacity style={styles.button} onPress={() => movePlayer(-1, 0)}>
-              <Text style={styles.buttonText}>Left</Text>
+            </ImageBackground>
+          </View>
+          <View style={styles.controls}>
+            <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, -1)}>
+              <Text style={styles.buttonText}>Up</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => movePlayer(1, 0)}>
-              <Text style={styles.buttonText}>Right</Text>
+            <View style={styles.horizontalControls}>
+              <TouchableOpacity style={styles.button} onPress={() => movePlayer(-1, 0)}>
+                <Text style={styles.buttonText}>Left</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={() => movePlayer(1, 0)}>
+                <Text style={styles.buttonText}>Right</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, 1)}>
+              <Text style={styles.buttonText}>Down</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, 1)}>
-            <Text style={styles.buttonText}>Down</Text>
-          </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
       {gameWon && (
         <View style={styles.overlay}>
           <Text style={styles.overlayText}>You Won!</Text>
@@ -160,22 +168,25 @@ const TabLabirinthGameScreen = () => {
           )}
         </View>
       </Modal>
-    </SafeAreaView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  safeArea: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: '#F0F0F0',
     paddingTop: Platform.OS === 'android' ? 25 : 0,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginVertical: 10,
+    color: '#FFFFFF',
   },
   gameArea: {
     flex: 1,
@@ -239,10 +250,12 @@ const styles = StyleSheet.create({
     width: 150,
   },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     padding: 10,
     margin: 5,
     borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
   },
   buttonText: {
     color: 'white',
