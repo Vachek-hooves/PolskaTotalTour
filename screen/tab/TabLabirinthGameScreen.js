@@ -7,7 +7,10 @@ import traveller from '../../assets/gamePlay/labyrinth/traveler.png'
 
 const { width, height } = Dimensions.get('window');
 const GRID_SIZE = 11;
-const CELL_SIZE = Math.floor(width * 0.8 / GRID_SIZE); // Reduced to 80% of screen width
+const MAP_ASPECT_RATIO = 16 / 9; // Assuming the map.png has a 16:9 aspect ratio
+const MAP_WIDTH = width * 0.9; // 90% of screen width
+const MAP_HEIGHT = MAP_WIDTH * MAP_ASPECT_RATIO;
+const CELL_SIZE = Math.floor(MAP_WIDTH / GRID_SIZE);
 const TAB_BAR_HEIGHT = 50; // Approximate height of the tab bar
 const CONTROLS_HEIGHT = 150; // Approximate height for controls
 
@@ -210,9 +213,8 @@ const styles = StyleSheet.create({
     paddingBottom: TAB_BAR_HEIGHT,
   },
   mapContainer: {
-    width: width * 0.9,
-    height: width * 0.9 * (16/9), // Maintain 9:16 aspect ratio
-    maxHeight: height - CONTROLS_HEIGHT - TAB_BAR_HEIGHT - 100, // Adjust based on other elements
+    width: MAP_WIDTH,
+    height: MAP_HEIGHT - 80,
     overflow: 'hidden',
     borderRadius: 18,
   },
@@ -260,7 +262,7 @@ const styles = StyleSheet.create({
     width: CELL_SIZE * 0.6,
     height: CELL_SIZE * 0.6,
     borderRadius: 6,
-    // backgroundColor: 'rgba(0, 255, 0, 0.7)',
+    backgroundColor: 'rgba(0, 255, 0, 0.7)',
   },
   controls: {
     justifyContent: 'center',
