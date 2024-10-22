@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     width: CELL_SIZE * 0.6,
     height: CELL_SIZE * 0.6,
     borderRadius: 6,
-    backgroundColor: 'rgba(0, 255, 0, 0.7)',
+    // backgroundColor: 'rgba(0, 255, 0, 0.7)',
   },
   controls: {
     justifyContent: 'center',
