@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Modal } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Modal, ImageBackground } from 'react-native';
 import { architecturePoland } from '../../data/architecturePoland';
+import tree from '../../assets/gamePlay/labyrinth/tree.png'
 
 const { width } = Dimensions.get('window');
 const GRID_SIZE = 11;
@@ -87,6 +88,8 @@ const TabLabirinthGameScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Labyrinth Game</Text>
+      <ImageBackground source={require('../../assets/gamePlay/labyrinth/map.png')} style={styles.map}>
+      </ImageBackground>
       <View style={styles.maze}>
         {maze.map((row, y) => (
           <View key={y} style={styles.row}>
@@ -162,7 +165,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   maze: {
-    borderWidth: 2,
+    // borderWidth: 2,
     borderColor: '#000',
   },
   row: {
@@ -171,11 +174,12 @@ const styles = StyleSheet.create({
   cell: {
     width: CELL_SIZE,
     height: CELL_SIZE,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: '#CCC',
   },
   wall: {
     backgroundColor: '#333',
+    borderRadius:18
   },
   player: {
     backgroundColor: 'blue',
