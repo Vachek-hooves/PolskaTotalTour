@@ -10,21 +10,19 @@ const generateMaze = () => {
   const maze = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
   for (let i = 0; i < GRID_SIZE; i++) {
     for (let j = 0; j < GRID_SIZE; j++) {
-      maze[i][j] = Math.random() > 0.2 ? 0 : 1; // 30% chance of being a wall
+      maze[i][j] = Math.random() > 0.2 ? 0 : 1; // 20% chance of being a wall
     }
   }
   maze[0][0] = 0; // Start
   maze[GRID_SIZE - 1][GRID_SIZE - 1] = 0; // End
 
-  // Place landmarks randomly
+  // Place all landmarks randomly
   const landmarks = [...architecturePoland];
-  let landmarkCount = 0;
-  while (landmarks.length > 0 && landmarkCount < 5) {
+  while (landmarks.length > 0) {
     const x = Math.floor(Math.random() * GRID_SIZE);
     const y = Math.floor(Math.random() * GRID_SIZE);
     if (maze[y][x] === 0 && !(x === 0 && y === 0) && !(x === GRID_SIZE - 1 && y === GRID_SIZE - 1)) {
       maze[y][x] = landmarks.pop();
-      landmarkCount++;
     }
   }
 
