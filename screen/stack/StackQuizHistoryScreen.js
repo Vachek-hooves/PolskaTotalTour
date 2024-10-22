@@ -5,8 +5,8 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
 
-const StackQuizHistoryScreen = () => {
-  const { polishHistoryQuizData } = useAppContext();
+const StackQuizHistoryScreen = ({ navigation }) => {
+  const { polishHistoryQuizData, saveQuizScore, historyHighScore } = useAppContext();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
@@ -28,6 +28,12 @@ const StackQuizHistoryScreen = () => {
       animateQuestion();
     }
   }, [currentQuestionIndex, polishHistoryQuizData]);
+
+  useEffect(() => {
+    if (showResult) {
+      saveQuizScore('history', score);
+    }
+  }, [showResult, score]);
 
   const animateQuestion = () => {
     fadeAnim.setValue(0);
@@ -166,6 +172,18 @@ const StackQuizHistoryScreen = () => {
           >
             <Text style={styles.resultText}>Quiz Completed!</Text>
             <Text style={styles.scoreText}>Your Score: {score}</Text>
+            <Text style={styles.highScoreText}>High Score: {historyHighScore}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TabQuizScreen')}>
+              <LinearGradient
+                colors={['#8A2BE2', '#191970']}
+                style={styles.buttonGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                opacity={0.9}
+              >
+                <Text style={styles.buttonText}>Menu</Text>
+              </LinearGradient>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={restartQuiz}>
               <LinearGradient
                 colors={['#8A2BE2', '#191970']}
@@ -259,5 +277,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
     color: '#FFFFFF',
+  },
+  highScoreText: {
+    fontSize: 16,
+    marginBottom: 20,
+    color: '#FFD700', // Gold color for high score
   },
 });

@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 const { width, height } = Dimensions.get('window');
 
 const StackQuizCitiesScreen = ({ navigation }) => {
-  const { citiesQuizData } = useAppContext();
+  const { citiesQuizData, saveQuizScore, citiesHighScore } = useAppContext();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
@@ -83,6 +83,12 @@ const StackQuizCitiesScreen = ({ navigation }) => {
     setSelectedAnswer(null);
     setIsAnswerCorrect(null);
   };
+
+  useEffect(() => {
+    if (showResult) {
+      saveQuizScore('cities', score);
+    }
+  }, [showResult, score]);
 
   if (!currentQuestion) {
     return <Text>Loading...</Text>;
@@ -165,6 +171,7 @@ const StackQuizCitiesScreen = ({ navigation }) => {
         >
           <Text style={styles.resultText}>Quiz Completed!</Text>
           <Text style={styles.scoreText}>Your Score: {score}</Text>
+          <Text style={styles.highScoreText}>High Score: {citiesHighScore}</Text>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TabQuizScreen')}>
             <LinearGradient
               colors={['#8A2BE2', '#191970']}
@@ -274,5 +281,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
     color: '#FFFFFF',
+  },
+  highScoreText: {
+    fontSize: 16,
+    marginBottom: 20,
+    color: '#FFD700', // Gold color for high score
   },
 });
