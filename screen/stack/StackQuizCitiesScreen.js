@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions, Animated } from 'react-native';
 import { useAppContext } from '../../store/context';
 import LinearGradient from 'react-native-linear-gradient';
@@ -10,14 +10,30 @@ const StackQuizCitiesScreen = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
-  const [fadeAnim] = useState(new Animated.Value(0));
-  const [scaleAnim] = useState(new Animated.Value(0.5));
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(0.5)).current;
+  const optionAnimations = useRef([]).current;
 
   const currentQuestion = citiesQuizData[currentQuestionIndex];
 
   useEffect(() => {
+    if (currentQuestion) {
+      // Ensure optionAnimations has the correct number of elements
+      while (optionAnimations.length < currentQuestion.options.length) {
+        optionAnimations.push(new Animated.Value(0));
+      }
+      animateQuestion();
+    }
+  }, [currentQuestionIndex, citiesQuizData]);
+
+  const animateQuestion = () => {
+    fadeAnim.setValue(0);
+    scaleAnim.setValue(0.5);
+    optionAnimations.forEach(anim => anim.setValue(0));
+
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -29,8 +45,16 @@ const StackQuizCitiesScreen = () => {
         friction: 4,
         useNativeDriver: true,
       }),
+      ...optionAnimations.map(anim =>
+        Animated.spring(anim, {
+          toValue: 1,
+          friction: 6,
+          tension: 40,
+          useNativeDriver: true,
+        })
+      ),
     ]).start();
-  }, [currentQuestionIndex]);
+  };
 
   const handleAnswer = (selectedAnswer) => {
     setSelectedAnswer(selectedAnswer);
@@ -41,7 +65,6 @@ const StackQuizCitiesScreen = () => {
       setScore(score + currentQuestion.score);
     }
 
-    // Delay moving to the next question to show feedback
     setTimeout(() => {
       if (currentQuestionIndex + 1 < citiesQuizData.length) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -94,13 +117,16 @@ const StackQuizCitiesScreen = () => {
               <Animated.View
                 key={index}
                 style={{
-                  opacity: fadeAnim,
+                  opacity: optionAnimations[index] || new Animated.Value(1),
                   transform: [
                     {
-                      translateY: fadeAnim.interpolate({
+                      translateY: (optionAnimations[index] || new Animated.Value(1)).interpolate({
                         inputRange: [0, 1],
                         outputRange: [50, 0],
                       }),
+                    },
+                    {
+                      scale: optionAnimations[index] || new Animated.Value(1),
                     },
                   ],
                 }}
