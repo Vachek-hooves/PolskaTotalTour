@@ -16,6 +16,7 @@ import {
   StackArchitectureScreen,
   StackQuizCitiesPlayScreen,
   StackQuizHistoryPlayScreen,
+  StackLabyrinthDetailScreen,
 } from './screen/stack';
 import TabLabirinthGameScreen from './screen/tab/TabLabirinthGameScreen';
 
@@ -129,6 +130,10 @@ function App() {
             name="StackQuizHistoryPlayScreen"
             component={StackQuizHistoryPlayScreen}
           />
+          <Stack.Screen
+            name="StackLabyrinthDetailScreen"
+            component={StackLabyrinthDetailScreen}
+          />  
         </Stack.Navigator>
       </NavigationContainer>
     </AppContextProvider>

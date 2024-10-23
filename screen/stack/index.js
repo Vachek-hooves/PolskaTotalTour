@@ -5,6 +5,7 @@ import StackPersonsScreen from './StackPersonsScreen';
 import StackArchitectureScreen from './StackArchitectureScreen';
 import StackQuizCitiesPlayScreen from './StackQuizCitiesPlayScreen';
 import StackQuizHistoryPlayScreen from './StackQuizHistoryPlayScreen';
+import StackLabyrinthDetailScreen from './StackLabyrinthDetailScreen';
 
 export {
   StackQuizStudyScreen,
@@ -14,4 +15,5 @@ export {
   StackArchitectureScreen,
   StackQuizCitiesPlayScreen,
   StackQuizHistoryPlayScreen,
+  StackLabyrinthDetailScreen,
 };

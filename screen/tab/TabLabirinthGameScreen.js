@@ -97,6 +97,8 @@ const TabLabirinthGameScreen = () => {
     );
   };
 
+  
+
   return (
     <LinearGradient
       colors={['#8A2BE2', '#191970']}
