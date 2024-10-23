@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, FlatList, TouchableOpacity, Image, Modal, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, FlatList, TouchableOpacity, Image, Modal, ScrollView, SafeAreaView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { dishPolish } from '../../data/dishPolish';
 
@@ -31,8 +31,11 @@ const StackDishScreen = () => {
         source={require('../../assets/gamePlay/explorer/dishes.png')}
         style={styles.backgroundImage}
         resizeMode="cover"
+        blurRadius={10}
+        
       >
         <View style={styles.overlay}>
+        <SafeAreaView></SafeAreaView>
           <Text style={styles.title}>Polish Dishes</Text>
           <FlatList
             data={dishPolish}
@@ -40,6 +43,7 @@ const StackDishScreen = () => {
             keyExtractor={(item) => item.id.toString()}
             numColumns={2}
             contentContainerStyle={styles.listContainer}
+            showsVerticalScrollIndicator={false}
           />
         </View>
       </ImageBackground>
