@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const WelcomeScreen = () => {
@@ -14,11 +14,15 @@ const WelcomeScreen = () => {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require('../assets/image/bg/welcome.png')}
+      style={styles.container}
+    
+    >
       <Text style={styles.text}>
         Welcome to Poland Total Explore - your personal guide to the wonders of Poland! Discover the most fascinating places, routes, and cultural treasures of this beautiful country.
       </Text>
-    </View>
+    </ImageBackground>
   );
 };
 
