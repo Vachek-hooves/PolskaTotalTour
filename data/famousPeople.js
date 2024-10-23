@@ -1,5 +1,5 @@
 export const famousPeople = [
-  {image:(''),
+  {image:require('../assets/image/famousPeople/marieCurie.png'),
     id: 1,
     name: "Marie Curie (Maria Skłodowska Curie)",
     yearsOfLife: "1867-1934",
@@ -7,7 +7,7 @@ export const famousPeople = [
     impact: "Her research on radioactivity not only changed science but also laid the foundations for the development of medicine, particularly in oncology.",
     interestingFact: "Curie was born in Warsaw to a family of teachers and showed a strong interest in science from an early age. She had to leave Poland due to political circumstances and continued her studies in Paris, where she met her husband, Pierre Curie. Her research in radioactivity led to the discovery of the elements polonium and radium. Element 96, curium, is named in her honor."
   },
-  {image:(''),
+  {image:require('../assets/image/famousPeople/chopin.png'),
     id: 2,
     name: "Frédéric Chopin",
     yearsOfLife: "1810-1849",
@@ -15,7 +15,7 @@ export const famousPeople = [
     impact: "Chopin made a huge contribution to world music; his works are still considered a benchmark for piano playing and inspire musicians worldwide.",
     interestingFact: "Chopin started playing the piano at the age of five and was already performing in public at ten. His music is infused with Polish folklore; he often used folk dances such as mazurkas and polonaises in his compositions. Despite his short life, his works, including nocturnes and waltzes, have become classics."
   },
-  {image:(''),
+  {image:require('../assets/image/famousPeople/szymborska.png'),
     id: 3,
     name: "Wisława Szymborska",
     yearsOfLife: "1923-2012",
@@ -23,7 +23,7 @@ export const famousPeople = [
     impact: "Her poetry touches on themes of human existence and identity, making her one of the most influential poets of the 20th century.",
     interestingFact: "Szymborska is often compared to poets like William Wordsworth and Imogen Canna, noted for the simplicity and clarity of her work. She not only wrote poetry but was also active in journalistic circles and participated in cultural and political events in Poland, especially after the fall of communism."
   },
-  {image:(''),
+  {image:require('../assets/image/famousPeople/jozef.png'),
     id: 4,
     name: "Józef Piłsudski",
     yearsOfLife: "1867-1935",
@@ -31,7 +31,7 @@ export const famousPeople = [
     impact: "As Marshal of Poland, he contributed to the formation of the modern Polish state and was an important figure in the interwar period.",
     interestingFact: "Piłsudski received military education and served in the Russian army. He believed in the importance of Polish independence and used military forces to defend Poland during the civil war. Piłsudski was also one of the founders of Polish state administration, and his political views continue to influence Polish politics today."
   },
-  {image:(''),
+  {image:require('../assets/image/famousPeople/adam.png'),
     id: 5,
     name: "Adam Mickiewicz",
     yearsOfLife: "1798-1855",
@@ -39,7 +39,7 @@ export const famousPeople = [
     impact: "His works, such as \"Dziady\" (Forefathers' Eve) and \"Pan Tadeusz,\" became the foundation of Polish literature and shaped national identity.",
     interestingFact: "Mickiewicz is regarded as Poland's \"national poet.\" His poetry often focuses on themes of patriotism and the struggle for freedom, as well as deep philosophical reflections. The poet was also active in émigré circles, and his works inspired many freedom fighters in Poland and beyond."
   },
-  {image:(''),
+  {image:require('../assets/image/famousPeople/tadeusz.png'),
     id: 6,
     name: "Tadeusz Kościuszko",
     yearsOfLife: "1746-1817",
@@ -47,7 +47,7 @@ export const famousPeople = [
     impact: "Kościuszko became a symbol of the struggle for freedom and justice, and his name is honored in both Poland and the United States.",
     interestingFact: "Kościuszko received an education at the engineering school in Warsaw and later served in the army. His strategic ideas, including the fortification of strongholds, played a crucial role in the success of American forces during the War of Independence. After returning to Poland, he became a leader of the uprising against Russian rule."
   },
-  {image:(''),
+  {image:require('../assets/image/famousPeople/lem.png'),
     id: 7,
     name: "Stanisław Lem",
     yearsOfLife: "1921-2006",
@@ -55,7 +55,7 @@ export const famousPeople = [
     impact: "Lem explored questions of technology, philosophy, and human existence; his works have greatly influenced science fiction.",
     interestingFact: "Lem was considered one of the most significant science fiction writers of the 20th century. His work encompasses not only science fiction but also philosophical essays. He often critiqued scientific and technological advancements, warning of potential dangers. His novel \"Solaris\" has been adapted into several films, including the Soviet version from 1972."
   },
-  {image:(''),
+  {image:require('../assets/image/famousPeople/ignacy.png'),
     id: 8,
     name: "Ignacy Jan Paderewski",
     yearsOfLife: "1860-1941",

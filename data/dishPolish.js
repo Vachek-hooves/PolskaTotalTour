@@ -1,5 +1,5 @@
 export const dishPolish = [
-  {
+  {image:require('../assets/image/dishes/bigos.png'),
     id: 1,
     name: "Bigos (Hunter's Stew)",
     history: "Bigos is one of the most iconic dishes in Polish cuisine, with roots dating back to medieval times. Originally, it was a hunter's stew made with game meat, cabbage, and various spices. Over time, pork or beef replaced game meat, and the recipe evolved. Bigos was a favorite among the Polish nobility, especially during hunting trips. The dish is known for improving in flavor over several days as the ingredients meld together.",
@@ -28,7 +28,7 @@ export const dishPolish = [
       ]
     }
   },
-  {
+  {image:require('../assets/image/dishes/dumplings.png'),
     id: 2,
     name: "Pierogi Ruskie (Dumplings with Potatoes and Cheese)",
     history: "Pierogi are a staple of Polish cuisine, and the \"Ruskie\" variety (meaning \"Ruthenian\") comes from the region of Rus, now part of modern-day Poland, Ukraine, and Belarus. These pierogi are traditionally filled with mashed potatoes and farmer's cheese, a simple and affordable combination. The dish became a favorite in rural areas and is often enjoyed at family gatherings and celebrations.",
@@ -55,7 +55,7 @@ export const dishPolish = [
       ]
     }
   },
-  {
+  {image:require('../assets/image/dishes/zurek.png'),
     id: 3,
     name: "Żurek (Sour Rye Soup)",
     history: "Żurek is a traditional Polish soup made from fermented rye flour. Its history dates back to the rural traditions of medieval Poland, where fermented foods played a key role in the winter diet. Żurek is often served during Easter, symbolizing rebirth, and is usually paired with boiled eggs and sausage.",
@@ -82,7 +82,7 @@ export const dishPolish = [
       ]
     }
   },
-  {
+  {image:require('../assets/image/dishes/kotlety.png'),
     id: 4,
     name: "Kotlety Schabowy (Breaded Pork Cutlets)",
     history: "Kotlety Schabowe is the Polish version of pork schnitzel, introduced in the 19th century under the influence of Western European cuisine. This dish quickly became popular among the Polish nobility, which is why they are sometimes called \"noble cutlets.\" Today, it is one of the most common meat dishes served in Poland, especially during family meals.",
@@ -103,7 +103,7 @@ export const dishPolish = [
       ]
     }
   },
-  {
+  {image:require('../assets/image/dishes/peaSoup.png'),
     id: 5,
     name: "Kapusniak (Cabbage and Pea Soup)",
     history: "Kapusniak is a traditional cabbage soup that was widely prepared in peasant households. In winter, when fresh vegetables were scarce, fermented cabbage (sauerkraut) became a vital ingredient. Adding peas made the dish more filling and nutritious. Kapusniak was often served during the Lenten season as a meatless meal.",
@@ -126,7 +126,7 @@ export const dishPolish = [
       ]
     }
   },
-  {
+  {image:require('../assets/image/dishes/donuts.png'),
     id: 6,
     name: "Donuts (Polish Donuts)",
     history: "Donuts are a staple of Polish cuisine, especially popular on \"Fat Thursday,\" the last Thursday before Lent. This tradition, dating back several centuries, allowed people to indulge before the fasting period began. Originally, donuts were filled with savory ingredients, but over time, they became sweet, with fillings like jam or custard.",
@@ -151,7 +151,7 @@ export const dishPolish = [
       ]
     }
   },
-  {
+  {image:require('../assets/image/dishes/rolls.png'),
     id: 7,
     name: "Gołąbki (Stuffed Cabbage Rolls)",
     history: "Gołąbki, or stuffed cabbage rolls, are a versatile dish popular across Poland. Traditionally filled with minced meat and rice, they have been a staple of Polish family gatherings and holiday feasts for centuries. The name \"gołąbki\" means \"little pigeons,\" possibly referring to the rolled shape.",
@@ -175,7 +175,7 @@ export const dishPolish = [
       ]
     }
   },
-  {
+  {image:require('../assets/image/dishes/tripeSoup.png'),
     id: 8,
     name: "Flaki (Tripe Soup)",
     history: "Flaki is a traditional Polish soup made from beef tripe, dating back to the reign of King Władysław II Jagiełło in the 14th century. The dish was commonly served at grand feasts, and its nourishing qualities made it popular among soldiers. Despite its strong flavor, flaki remains a beloved dish in various regions of Poland.",
@@ -199,7 +199,7 @@ export const dishPolish = [
       ]
     }
   },
-  {
+  {image:require('../assets/image/dishes/buckwheat.png'),
     id: 9,
     name: "Kaszotto (Buckwheat Dish)",
     history: "Buckwheat is an important ingredient in Polish culinary heritage, and dishes made with it have a long history. Kaszotto, a simple yet nourishing dish, is often found on Polish rural tables and is served as a side dish or main course with various additions like mushrooms or meat.",
@@ -221,7 +221,7 @@ export const dishPolish = [
       ]
     }
   },
-  {
+  {image:require('../assets/image/dishes/applePie.png'),
     id: 10,
     name: "Szarlotka (Apple Pie)",
     history: "Szarlotka is a popular Polish apple pie that resembles the French dessert. The dish arrived in Poland in the 19th century, influenced by European cuisine. However, Poles adapted the recipe to their traditions, using abundant local apples. Szarlotka has become a classic dessert on Polish tables, especially in autumn when apples are in season.",

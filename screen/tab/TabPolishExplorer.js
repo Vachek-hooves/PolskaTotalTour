@@ -49,7 +49,7 @@ const TabPolishExplorer = () => {
             <Text style={styles.buttonText}>Famous Persons</Text>
           </LinearGradient>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('StackArchitectureScreen')}
         >
@@ -62,7 +62,7 @@ const TabPolishExplorer = () => {
           >
             <Text style={styles.buttonText}>Architecture</Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </ImageBackground>
   );

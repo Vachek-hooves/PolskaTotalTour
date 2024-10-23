@@ -9,11 +9,13 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useAppContext } from '../../store/context';
 
 const { width, height } = Dimensions.get('window');
 
 const TabQuizScreen = () => {
   const navigation = useNavigation();
+  const { citiesHighScore, historyHighScore } = useAppContext();
 
   return (
     <ImageBackground
@@ -21,6 +23,11 @@ const TabQuizScreen = () => {
       source={require('../../assets/gamePlay/quiz/bg/quizBg1.png')}
       resizeMode="cover"
     >
+      <View style={styles.scoreContainer}>
+        <Text style={styles.scoreTitle}>High Scores</Text>
+        <Text style={styles.scoreText}>History Quiz: {historyHighScore}</Text>
+        <Text style={styles.scoreText}>Cities Quiz: {citiesHighScore}</Text>
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
@@ -62,6 +69,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  scoreContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  scoreTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#191970',
+  },
+  scoreText: {
+    fontSize: 18,
+    marginBottom: 5,
+    color: '#191970',
   },
   buttonContainer: {
     width: width * 0.9,
