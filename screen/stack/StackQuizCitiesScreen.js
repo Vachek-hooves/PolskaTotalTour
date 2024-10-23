@@ -137,107 +137,107 @@ const StackQuizCitiesScreen = ({ navigation }) => {
       resizeMode="cover"
       style={styles.container}
     >
-      {!showResult ? (
-        <Animated.View 
-          style={[
-            styles.quizContainer,
-            {
-              opacity: fadeAnim,
-              transform: [{ scale: scaleAnim }],
-            },
-          ]}
-        >
-          <View style={styles.topBar}>
-            <Text style={styles.scoreText}>Score: {score}</Text>
-            <TouchableOpacity style={styles.hintButton} onPress={handleHint}>
-              {/* <Icon name="lightbulb-o" size={24} color="#FFD700" /> */}
-              <Text style={styles.hintText}>{hintCount}</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.questionText}>{currentQuestion.question}</Text>
-          <View style={styles.optionsContainer}>
-            {availableOptions.map((option, index) => (
-              <Animated.View
-                key={index}
-                style={{
-                  opacity: optionAnimations[index] || new Animated.Value(1),
-                  transform: [
-                    {
-                      translateY: (optionAnimations[index] || new Animated.Value(1)).interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [50, 0],
-                      }),
-                    },
-                    {
-                      scale: optionAnimations[index] || new Animated.Value(1),
-                    },
-                  ],
-                }}
-              >
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => handleAnswer(option)}
-                  disabled={selectedAnswer !== null}
+      <View style={styles.overlay}>
+        {!showResult ? (
+          <Animated.View 
+            style={[
+              styles.quizContainer,
+              {
+                opacity: fadeAnim,
+                transform: [{ scale: scaleAnim }],
+              },
+            ]}
+          >
+            <View style={styles.progressBarContainer}>
+              <View style={[styles.progressBar, { width: `${((currentQuestionIndex + 1) / citiesQuizData.length) * 100}%` }]} />
+            </View>
+            <View style={styles.topBar}>
+              <Text style={styles.scoreText}>Score: {score}</Text>
+              <TouchableOpacity style={styles.hintButton} onPress={handleHint}>
+                {/* <Icon name="lightbulb-o" size={24} color="#FFD700" /> */}
+                <Text style={styles.hintText}>{hintCount}</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.questionText}>{currentQuestion.question}</Text>
+            <View style={styles.optionsContainer}>
+              {availableOptions.map((option, index) => (
+                <Animated.View
+                  key={index}
+                  style={{
+                    opacity: optionAnimations[index] || new Animated.Value(1),
+                    transform: [
+                      {
+                        translateY: (optionAnimations[index] || new Animated.Value(1)).interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [50, 0],
+                        }),
+                      },
+                      {
+                        scale: optionAnimations[index] || new Animated.Value(1),
+                      },
+                    ],
+                  }}
                 >
-                  <LinearGradient
-                    colors={getButtonColors(option)}
-                    style={styles.buttonGradient}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    opacity={0.9}
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => handleAnswer(option)}
+                    disabled={selectedAnswer !== null}
                   >
-                    <Text style={styles.buttonText}>{option}</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              </Animated.View>
-            ))}
-          </View>
-          <Text style={styles.progressText}>
-            Question {currentQuestionIndex + 1} of {citiesQuizData.length}
-          </Text>
-        </Animated.View>
-      ) : (
-        <Animated.View 
-          style={[
-            styles.resultContainer,
-            {
-              opacity: fadeAnim,
-              transform: [{ scale: scaleAnim }],
-            },
-          ]}
-        >
-          <Text style={styles.resultText}>Quiz Completed!</Text>
-          <Text style={styles.scoreText}>Your Score: {score}</Text>
-          <Text style={styles.highScoreText}>High Score: {citiesHighScore}</Text>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TabQuizScreen')}>
-            <LinearGradient
-              colors={['#8A2BE2', '#191970']}
-              style={styles.buttonGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              opacity={0.9}
-            >
-              <Text style={styles.buttonText}>Menu</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={restartQuiz}>
-            <LinearGradient
-              colors={['#8A2BE2', '#191970']}
-              style={styles.buttonGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              opacity={0.9}
-            >
-              <Text style={styles.buttonText}>Restart Quiz</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </Animated.View>
-      )}
+                    <LinearGradient
+                      colors={getButtonColors(option)}
+                      style={styles.buttonGradient}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                    >
+                      <Text style={styles.buttonText}>{option}</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </Animated.View>
+              ))}
+            </View>
+            <Text style={styles.progressText}>
+              Question {currentQuestionIndex + 1} of {citiesQuizData.length}
+            </Text>
+          </Animated.View>
+        ) : (
+          <Animated.View 
+            style={[
+              styles.resultContainer,
+              {
+                opacity: fadeAnim,
+                transform: [{ scale: scaleAnim }],
+              },
+            ]}
+          >
+            <Text style={styles.resultText}>Quiz Completed!</Text>
+            <Text style={styles.scoreText}>Your Score: {score}</Text>
+            <Text style={styles.highScoreText}>High Score: {citiesHighScore}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TabQuizScreen')}>
+              <LinearGradient
+                colors={['#8A2BE2', '#191970']}
+                style={styles.buttonGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
+                <Text style={styles.buttonText}>Menu</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={restartQuiz}>
+              <LinearGradient
+                colors={['#8A2BE2', '#191970']}
+                style={styles.buttonGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
+                <Text style={styles.buttonText}>Restart Quiz</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+      </View>
     </ImageBackground>
   );
 };
-
-export default StackQuizCitiesScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -245,28 +245,68 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  quizContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  overlay: {
+    flex: 1,
+    width: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  quizContainer: {
     padding: 20,
     borderRadius: 10,
     width: width * 0.9,
     alignItems: 'center',
+  },
+  progressBarContainer: {
+    width: '100%',
+    height: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    borderRadius: 5,
+    marginBottom: 20,
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: '#FFD700',
+    borderRadius: 5,
+  },
+  topBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 20,
+  },
+  scoreText: {
+    fontSize: 18,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  hintButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    padding: 10,
+    borderRadius: 20,
+  },
+  hintText: {
+    color: '#FFFFFF',
+    marginLeft: 5,
+    fontWeight: 'bold',
   },
   questionText: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
-    color: '#191970',
-    color:'#FFFFFF'
+    color: '#FFFFFF'
   },
   optionsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     width: '100%',
-    paddingVertical:30
+    paddingVertical: 30
   },
   button: {
     width: width * 0.4,
@@ -302,7 +342,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   resultContainer: {
-    backgroundColor: 'rgba(25, 25, 112, 0.8)', // Dark blue with higher opacity
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
@@ -314,38 +353,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#FFFFFF',
   },
-  scoreText: {
-    fontSize: 18,
-    marginBottom: 20,
-    color: '#FFFFFF',
-  },
   highScoreText: {
     fontSize: 16,
     marginBottom: 20,
-    color: '#FFD700', // Gold color for high score
-  },
-  topBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    marginBottom: 20,
-  },
-  scoreText: {
-    fontSize: 18,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-  hintButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    padding: 10,
-    borderRadius: 20,
-  },
-  hintText: {
-    color: '#FFFFFF',
-    marginLeft: 5,
-    fontWeight: 'bold',
+    color: '#FFD700',
   },
 });
+
+export default StackQuizCitiesScreen;
