@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, FlatList, Image, TouchableOpacity, SafeAreaView, Modal, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  Modal,
+  ScrollView,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { famousPeople } from '../../data/famousPeople';
@@ -8,7 +19,7 @@ const PersonCard = ({ item, onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.card}>
     <Image source={item.image} style={styles.personImage} />
     <LinearGradient
-      colors={['rgba(138, 43, 226, 0.7)', 'rgba(25, 25, 112, 0.7)']}
+      colors={['transparent', 'rgba(0, 0, 0, 0.8)']}
       style={styles.cardOverlay}
     >
       <Text style={styles.name}>{item.name}</Text>
@@ -22,18 +33,16 @@ const StackPersonsScreen = () => {
   const [selectedPerson, setSelectedPerson] = useState(null);
 
   const renderPersonCard = ({ item }) => (
-    <PersonCard
-      item={item}
-      onPress={() => setSelectedPerson(item)}
-    />
+    <PersonCard item={item} onPress={() => setSelectedPerson(item)} />
   );
 
   return (
     <ImageBackground
       source={require('../../assets/gamePlay/explorer/famous.png')}
       style={styles.mainContainer}
+      blurRadius={10}
     >
-      <LinearGradient
+      <View
         colors={['rgba(138, 43, 226, 0.8)', 'rgba(25, 25, 112, 0.8)']}
         style={styles.overlay}
       >
@@ -44,6 +53,7 @@ const StackPersonsScreen = () => {
             renderItem={renderPersonCard}
             keyExtractor={(item) => item.id.toString()}
             contentContainerStyle={styles.listContainer}
+            showsVerticalScrollIndicator={false}
           />
           <TouchableOpacity
             style={styles.returnButtonContainer}
@@ -59,7 +69,7 @@ const StackPersonsScreen = () => {
             </LinearGradient>
           </TouchableOpacity>
         </SafeAreaView>
-      </LinearGradient>
+      </View>
       <Modal
         visible={selectedPerson !== null}
         animationType="slide"
@@ -73,17 +83,26 @@ const StackPersonsScreen = () => {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               {selectedPerson && (
                 <>
-                  <Image source={selectedPerson.image} style={styles.modalImage} />
+                  <Image
+                    source={selectedPerson.image}
+                    style={styles.modalImage}
+                  />
                   <Text style={styles.modalName}>{selectedPerson.name}</Text>
-                  <Text style={styles.modalYears}>{selectedPerson.yearsOfLife}</Text>
-                  <Text style={styles.modalDescription}>{selectedPerson.description}</Text>
+                  <Text style={styles.modalYears}>
+                    {selectedPerson.yearsOfLife}
+                  </Text>
+                  <Text style={styles.modalDescription}>
+                    {selectedPerson.description}
+                  </Text>
                   <Text style={styles.modalSubtitle}>Impact:</Text>
                   <Text style={styles.modalText}>{selectedPerson.impact}</Text>
                   <Text style={styles.modalSubtitle}>Interesting Fact:</Text>
-                  <Text style={styles.modalText}>{selectedPerson.interestingFact}</Text>
+                  <Text style={styles.modalText}>
+                    {selectedPerson.interestingFact}
+                  </Text>
                 </>
               )}
             </ScrollView>
@@ -106,6 +125,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   safeArea: {
     flex: 1,
@@ -121,14 +141,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   card: {
-    height: 200,
+    height: 250,
     borderRadius: 15,
     marginBottom: 20,
     overflow: 'hidden',
   },
   personImage: {
     width: '100%',
-    height: '100%',
+    height: 500,
     resizeMode: 'cover',
   },
   cardOverlay: {
@@ -136,16 +156,18 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    height: '50%',
+    justifyContent: 'flex-end',
     padding: 15,
   },
   name: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
     marginBottom: 5,
   },
   years: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#FFFFFF',
   },
   returnButtonContainer: {
@@ -175,7 +197,7 @@ const styles = StyleSheet.create({
   },
   modalImage: {
     width: '100%',
-    height: 200,
+    height: 500,
     borderRadius: 10,
     marginBottom: 15,
   },
