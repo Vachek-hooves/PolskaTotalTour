@@ -10,6 +10,7 @@ export const AppContextProvider = ({ children }) => {
   const [polishHistoryQuizData, setPolishHistoryQuizData] = useState([]);
   const [citiesHighScore, setCitiesHighScore] = useState(0);
   const [historyHighScore, setHistoryHighScore] = useState(0);
+  const [hintCount, setHintCount] = useState(5);
 
   useEffect(() => {
     const initializeQuizData = async () => {
@@ -46,6 +47,14 @@ export const AppContextProvider = ({ children }) => {
         if (storedHistoryHighScore !== null) {
           setHistoryHighScore(parseInt(storedHistoryHighScore, 10));
         }
+
+        // Load hint count
+        const storedHintCount = await AsyncStorage.getItem('hintCount');
+        if (storedHintCount !== null) {
+          setHintCount(parseInt(storedHintCount, 10));
+        } else {
+          await AsyncStorage.setItem('hintCount', '5');
+        }
       } catch (error) {
         console.error('Error initializing quiz data:', error);
       }
@@ -72,6 +81,28 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  const useHint = async () => {
+    if (hintCount > 0) {
+      const newHintCount = hintCount - 1;
+      setHintCount(newHintCount);
+      await AsyncStorage.setItem('hintCount', newHintCount.toString());
+      return true;
+    }
+    return false;
+  };
+
+  const exchangeScoreForHint = async (score, quizType) => {
+    if (score >= 10) {
+      const newScore = score - 10;
+      const newHintCount = hintCount + 1;
+      setHintCount(newHintCount);
+      await AsyncStorage.setItem('hintCount', newHintCount.toString());
+      await saveQuizScore(quizType, newScore);
+      return true;
+    }
+    return false;
+  };
+
   const value = {
     citiesQuizData,
     polishHistoryQuizData,
@@ -80,6 +111,9 @@ export const AppContextProvider = ({ children }) => {
     citiesHighScore,
     historyHighScore,
     saveQuizScore,
+    hintCount,
+    useHint,
+    exchangeScoreForHint,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

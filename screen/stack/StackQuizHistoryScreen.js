@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions, Animated, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions, Animated, ScrollView, Alert } from 'react-native';
 import { useAppContext } from '../../store/context';
 import LinearGradient from 'react-native-linear-gradient';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { width, height } = Dimensions.get('window');
 
 const StackQuizHistoryScreen = ({ navigation }) => {
-  const { polishHistoryQuizData, saveQuizScore, historyHighScore } = useAppContext();
+  const { polishHistoryQuizData, saveQuizScore, historyHighScore, hintCount, useHint, exchangeScoreForHint } = useAppContext();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
+  const [showHint, setShowHint] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.5)).current;
@@ -90,6 +92,32 @@ const StackQuizHistoryScreen = ({ navigation }) => {
     setIsAnswerCorrect(null);
   };
 
+  const handleHint = async () => {
+    const hintUsed = await useHint();
+    if (hintUsed) {
+      setShowHint(true);
+    } else {
+      Alert.alert('No hints left', 'Would you like to exchange 10 points for a hint?', [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: async () => {
+            const exchanged = await exchangeScoreForHint(score, 'history');
+            if (exchanged) {
+              setScore(score - 10);
+              setShowHint(true);
+            } else {
+              Alert.alert('Not enough points', 'You need at least 10 points to exchange for a hint.');
+            }
+          },
+        },
+      ]);
+    }
+  };
+
   if (!currentQuestion) {
     return <Text>Loading...</Text>;
   }
@@ -156,9 +184,20 @@ const StackQuizHistoryScreen = ({ navigation }) => {
                 </Animated.View>
               ))}
             </View>
-            <Text style={styles.progressText}>
-              Question {currentQuestionIndex + 1} of {polishHistoryQuizData.length}
-            </Text>
+            <View style={styles.bottomContainer}>
+              <Text style={styles.progressText}>
+                Question {currentQuestionIndex + 1} of {polishHistoryQuizData.length}
+              </Text>
+              <TouchableOpacity style={styles.hintButton} onPress={handleHint}>
+                <Icon name="lightbulb-o" size={24} color="#FFD700" />
+                <Text style={styles.hintButtonText}>{hintCount}</Text>
+              </TouchableOpacity>
+            </View>
+            {showHint && (
+              <View style={styles.hintContainer}>
+                <Text style={styles.hintText}>{currentQuestion.hint}</Text>
+              </View>
+            )}
           </Animated.View>
         ) : (
           <Animated.View 
@@ -282,5 +321,34 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     color: '#FFD700', // Gold color for high score
+  },
+  bottomContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 20,
+  },
+  hintButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    padding: 10,
+    borderRadius: 20,
+  },
+  hintButtonText: {
+    color: '#FFD700',
+    marginLeft: 5,
+    fontWeight: 'bold',
+  },
+  hintContainer: {
+    backgroundColor: 'rgba(255, 215, 0, 0.2)',
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  hintText: {
+    color: '#FFD700',
+    fontStyle: 'italic',
   },
 });

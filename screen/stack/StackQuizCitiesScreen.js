@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions, Animated, Alert } from 'react-native';
 import { useAppContext } from '../../store/context';
 import LinearGradient from 'react-native-linear-gradient';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { width, height } = Dimensions.get('window');
 
 const StackQuizCitiesScreen = ({ navigation }) => {
-  const { citiesQuizData, saveQuizScore, citiesHighScore } = useAppContext();
+  const { citiesQuizData, saveQuizScore, citiesHighScore, hintCount, useHint, exchangeScoreForHint } = useAppContext();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
+  const [availableOptions, setAvailableOptions] = useState([]);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.5)).current;
@@ -21,7 +23,7 @@ const StackQuizCitiesScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (currentQuestion) {
-      // Ensure optionAnimations has the correct number of elements
+      setAvailableOptions(currentQuestion.options);
       while (optionAnimations.length < currentQuestion.options.length) {
         optionAnimations.push(new Animated.Value(0));
       }
@@ -84,6 +86,34 @@ const StackQuizCitiesScreen = ({ navigation }) => {
     setIsAnswerCorrect(null);
   };
 
+  const handleHint = async () => {
+    const hintUsed = await useHint();
+    if (hintUsed) {
+      const incorrectOptions = availableOptions.filter(option => option !== currentQuestion.answer);
+      const optionsToRemove = incorrectOptions.sort(() => 0.5 - Math.random()).slice(0, 2);
+      setAvailableOptions(availableOptions.filter(option => !optionsToRemove.includes(option)));
+    } else {
+      Alert.alert("No hints left", "Would you like to exchange 10 points for a hint?", [
+        {
+          text: "Yes",
+          onPress: async () => {
+            const exchanged = await exchangeScoreForHint(score, 'cities');
+            if (exchanged) {
+              setScore(score - 10);
+              handleHint();
+            } else {
+              Alert.alert("Not enough points", "You need at least 10 points to exchange for a hint.");
+            }
+          }
+        },
+        {
+          text: "No",
+          style: "cancel"
+        }
+      ]);
+    }
+  };
+
   useEffect(() => {
     if (showResult) {
       saveQuizScore('cities', score);
@@ -117,9 +147,16 @@ const StackQuizCitiesScreen = ({ navigation }) => {
             },
           ]}
         >
+          <View style={styles.topBar}>
+            <Text style={styles.scoreText}>Score: {score}</Text>
+            <TouchableOpacity style={styles.hintButton} onPress={handleHint}>
+              {/* <Icon name="lightbulb-o" size={24} color="#FFD700" /> */}
+              <Text style={styles.hintText}>{hintCount}</Text>
+            </TouchableOpacity>
+          </View>
           <Text style={styles.questionText}>{currentQuestion.question}</Text>
           <View style={styles.optionsContainer}>
-            {currentQuestion.options.map((option, index) => (
+            {availableOptions.map((option, index) => (
               <Animated.View
                 key={index}
                 style={{
@@ -286,5 +323,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     color: '#FFD700', // Gold color for high score
+  },
+  topBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 20,
+  },
+  scoreText: {
+    fontSize: 18,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  hintButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    padding: 10,
+    borderRadius: 20,
+  },
+  hintText: {
+    color: '#FFFFFF',
+    marginLeft: 5,
+    fontWeight: 'bold',
   },
 });
