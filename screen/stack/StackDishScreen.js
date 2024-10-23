@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ImageBackground, FlatList, TouchableOpacity, Image, Modal, ScrollView, SafeAreaView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 import { dishPolish } from '../../data/dishPolish';
 
 const DishItem = ({ item, onPress }) => (
@@ -12,6 +13,7 @@ const DishItem = ({ item, onPress }) => (
 
 const StackDishScreen = () => {
   const [selectedDish, setSelectedDish] = useState(null);
+  const navigation = useNavigation();
 
   const renderDishItem = ({ item }) => (
     <DishItem
@@ -21,30 +23,44 @@ const StackDishScreen = () => {
   );
 
   return (
-    <LinearGradient
-      colors={['#8A2BE2', '#191970']}
-      style={styles.container}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
+    <View style={styles.container}>
       <ImageBackground
         source={require('../../assets/gamePlay/explorer/dishes.png')}
         style={styles.backgroundImage}
         resizeMode="cover"
         blurRadius={10}
-        
       >
-        <View style={styles.overlay}>
-        <SafeAreaView></SafeAreaView>
-          <Text style={styles.title}>Polish Dishes</Text>
-          <FlatList
-            data={dishPolish}
-            renderItem={renderDishItem}
-            keyExtractor={(item) => item.id.toString()}
-            numColumns={2}
-            contentContainerStyle={styles.listContainer}
-            showsVerticalScrollIndicator={false}
-          />
+        <View
+        
+          style={styles.overlay}
+          
+        >
+          <SafeAreaView style={styles.safeArea}>
+            <View style={styles.contentContainer}>
+              <Text style={styles.title}>Polish Dishes</Text>
+              <FlatList
+                data={dishPolish}
+                renderItem={renderDishItem}
+                keyExtractor={(item) => item.id.toString()}
+                numColumns={2}
+                contentContainerStyle={styles.listContainer}
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+              >
+                <LinearGradient
+                  colors={['#8A2BE2', '#191970']}
+                  style={styles.returnButton}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                >
+                  <Text style={styles.returnButtonText}>Return</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </SafeAreaView>
         </View>
       </ImageBackground>
       <Modal
@@ -88,7 +104,7 @@ const StackDishScreen = () => {
           </LinearGradient>
         </View>
       </Modal>
-    </LinearGradient>
+    </View>
   );
 };
 
@@ -98,11 +114,16 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    justifyContent: 'center',
   },
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  safeArea: {
+    flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
     padding: 20,
   },
   title: {
@@ -127,9 +148,23 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   dishName: {
-    color: '#FFFFFF',
+    color: '#8A2BE2',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  buttonContainer: {
+    padding: 20,
+    paddingBottom: 30,
+  },
+  returnButton: {
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  returnButtonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
     fontWeight: 'bold',
   },
   modalContainer: {
