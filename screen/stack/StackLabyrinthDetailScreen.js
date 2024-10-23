@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     color: '#CCCCCC',
   },
   mapContainer: {
-    height: 200,
+    height: 350,
     width: '100%',
     marginTop: 10,
   },
