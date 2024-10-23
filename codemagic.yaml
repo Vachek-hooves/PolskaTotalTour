@@ -1,4 +1,4 @@
-workflow:
+workflows:
   poland-total-explore-workflow:
     name: Poland Total Explore
     integrations:
