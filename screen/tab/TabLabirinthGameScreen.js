@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Modal, ImageBackground, SafeAreaView, Platform, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ImageBackground, SafeAreaView, Platform, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { architecturePoland } from '../../data/architecturePoland';
 import tree from '../../assets/gamePlay/labyrinth/tree.png'
@@ -7,12 +8,12 @@ import traveller from '../../assets/gamePlay/labyrinth/traveler.png'
 
 const { width, height } = Dimensions.get('window');
 const GRID_SIZE = 11;
-const MAP_ASPECT_RATIO = 16 / 9; // Assuming the map.png has a 16:9 aspect ratio
-const MAP_WIDTH = width * 0.9; // 90% of screen width
+const MAP_ASPECT_RATIO = 16 / 9;
+const MAP_WIDTH = width * 0.9;
 const MAP_HEIGHT = MAP_WIDTH * MAP_ASPECT_RATIO;
 const CELL_SIZE = Math.floor(MAP_WIDTH / GRID_SIZE);
-const TAB_BAR_HEIGHT = 50; // Approximate height of the tab bar
-const CONTROLS_HEIGHT = 150; // Approximate height for controls
+const TAB_BAR_HEIGHT = 50;
+const CONTROLS_HEIGHT = 150;
 
 const generateMaze = () => {
   const maze = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
@@ -38,11 +39,10 @@ const generateMaze = () => {
 };
 
 const TabLabirinthGameScreen = () => {
+  const navigation = useNavigation();
   const [maze, setMaze] = useState(generateMaze());
   const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
   const [gameWon, setGameWon] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [currentLandmark, setCurrentLandmark] = useState(null);
 
   useEffect(() => {
     if (playerPosition.x === GRID_SIZE - 1 && playerPosition.y === GRID_SIZE - 1) {
@@ -50,10 +50,9 @@ const TabLabirinthGameScreen = () => {
     }
     const cell = maze[playerPosition.y][playerPosition.x];
     if (typeof cell === 'object') {
-      setCurrentLandmark(cell);
-      setModalVisible(true);
+      navigation.navigate('StackLabyrinthDetailScreen', { landmark: cell });
     }
-  }, [playerPosition]);
+  }, [playerPosition, maze, navigation]);
 
   const movePlayer = (dx, dy) => {
     const newX = playerPosition.x + dx;
@@ -97,8 +96,6 @@ const TabLabirinthGameScreen = () => {
     );
   };
 
-  
-
   return (
     <LinearGradient
       colors={['#8A2BE2', '#191970']}
@@ -107,7 +104,6 @@ const TabLabirinthGameScreen = () => {
       end={{ x: 1, y: 1 }}
     >
       <SafeAreaView style={styles.safeArea}>
-       
         <View style={styles.gameArea}>
           <View style={styles.mapContainer}>
             <ImageBackground 
@@ -152,41 +148,6 @@ const TabLabirinthGameScreen = () => {
           </TouchableOpacity>
         </View>
       )}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalView}>
-            {currentLandmark && (
-              <ImageBackground 
-                source={currentLandmark.image} 
-                style={styles.modalBackground}
-                resizeMode="cover"
-              >
-                <ScrollView contentContainerStyle={styles.modalContent}>
-                  <Text style={styles.modalTitle}>{currentLandmark.name}</Text>
-                  <Text style={styles.modalText}>Location: {currentLandmark.location}</Text>
-                  <Text style={styles.modalText}>{currentLandmark.description}</Text>
-                  <Text style={styles.modalText}>Historical Significance: {currentLandmark.historicalSignificance}</Text>
-                  <Text style={styles.modalSubtitle}>Interesting Facts:</Text>
-                  {currentLandmark.interestingFacts.map((fact, index) => (
-                    <Text key={index} style={styles.modalText}>• {fact}</Text>
-                  ))}
-                  <TouchableOpacity
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(false)}
-                  >
-                    <Text style={styles.buttonText}>Close</Text>
-                  </TouchableOpacity>
-                </ScrollView>
-              </ImageBackground>
-            )}
-          </View>
-        </View>
-      </Modal>
     </LinearGradient>
   );
 };
@@ -303,67 +264,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 20,
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-  },
-  modalView: {
-    width: '90%',
-    height: '80%',
-    backgroundColor: 'white',
-    borderRadius: 20,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-  },
-  modalBackground: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  modalTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 10,
-  },
-  modalSubtitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginTop: 10,
-    marginBottom: 5,
-  },
-  modalText: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    marginBottom: 10,
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
 });
 
