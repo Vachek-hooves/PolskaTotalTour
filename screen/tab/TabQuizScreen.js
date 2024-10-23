@@ -25,11 +25,11 @@ const TabQuizScreen = () => {
     >
       <View style={styles.scoreContainer}>
         <Text style={styles.scoreTitle}>High Scores</Text>
-        <Text style={styles.scoreText}>History Quiz: {historyHighScore}</Text>
+        {/* <Text style={styles.scoreText}>History Quiz: {historyHighScore}</Text> */}
         <Text style={styles.scoreText}>Cities Quiz: {citiesHighScore}</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('StackQuizHistoryScreen')}
         >
@@ -42,7 +42,7 @@ const TabQuizScreen = () => {
           >
             <Text style={styles.buttonText}>History</Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('StackQuizStudyScreen')}
