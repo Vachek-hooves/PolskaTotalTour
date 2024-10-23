@@ -2,7 +2,7 @@ workflows:
   poland-total-explore-workflow:
     name: Poland Total Explore
     integrations:
-      app_store_connect:
+      app_store_connect: PolandTotalCodemagicApiKey
     environment:
       ios_signing:
         distribution_type: app_store
