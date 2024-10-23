@@ -42,7 +42,7 @@ const TabNavigator = () => {
           paddingBottom: 0,
         },
         tabBarActiveTintColor: '#FFFFFF',
-        tabBarInactiveTintColor: '#CCCCCC',
+        tabBarInactiveTintColor: '#CCCCCC'+80,
       }}
     >
       <Tab.Screen
