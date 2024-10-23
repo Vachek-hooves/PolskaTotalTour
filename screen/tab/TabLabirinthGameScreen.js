@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ImageBackground, SafeAreaView, Platform, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ImageBackground, SafeAreaView, Platform, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { architecturePoland } from '../../data/architecturePoland';
@@ -12,7 +12,7 @@ const MAP_ASPECT_RATIO = 16 / 9;
 const MAP_WIDTH = width * 0.9;
 const MAP_HEIGHT = MAP_WIDTH * MAP_ASPECT_RATIO;
 const CELL_SIZE = Math.floor(MAP_WIDTH / GRID_SIZE);
-const TAB_BAR_HEIGHT = 50;
+const TAB_BAR_HEIGHT = 90; // Increased to match your tab bar height
 const CONTROLS_HEIGHT = 150;
 
 const generateMaze = () => {
@@ -104,41 +104,43 @@ const TabLabirinthGameScreen = () => {
       end={{ x: 1, y: 1 }}
     >
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.gameArea}>
-          <View style={styles.mapContainer}>
-            <ImageBackground 
-              source={require('../../assets/gamePlay/labyrinth/map.png')} 
-              style={styles.map} 
-              resizeMode='cover'
-            >
-              <View style={styles.mazeOverlay}>
-                <View style={styles.maze}>
-                  {maze.map((row, y) => (
-                    <View key={y} style={styles.row}>
-                      {row.map((cell, x) => renderCell(cell, x, y))}
-                    </View>
-                  ))}
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          <View style={styles.gameArea}>
+            <View style={styles.mapContainer}>
+              <ImageBackground 
+                source={require('../../assets/gamePlay/labyrinth/map.png')} 
+                style={styles.map} 
+                resizeMode='cover'
+              >
+                <View style={styles.mazeOverlay}>
+                  <View style={styles.maze}>
+                    {maze.map((row, y) => (
+                      <View key={y} style={styles.row}>
+                        {row.map((cell, x) => renderCell(cell, x, y))}
+                      </View>
+                    ))}
+                  </View>
                 </View>
-              </View>
-            </ImageBackground>
-          </View>
-          <View style={styles.controls}>
-            <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, -1)}>
-              <Text style={styles.buttonText}>Up</Text>
-            </TouchableOpacity>
-            <View style={styles.horizontalControls}>
-              <TouchableOpacity style={styles.button} onPress={() => movePlayer(-1, 0)}>
-                <Text style={styles.buttonText}>Left</Text>
+              </ImageBackground>
+            </View>
+            <View style={styles.controls}>
+              <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, -1)}>
+                <Text style={styles.buttonText}>Up</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => movePlayer(1, 0)}>
-                <Text style={styles.buttonText}>Right</Text>
+              <View style={styles.horizontalControls}>
+                <TouchableOpacity style={styles.button} onPress={() => movePlayer(-1, 0)}>
+                  <Text style={styles.buttonText}>Left</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => movePlayer(1, 0)}>
+                  <Text style={styles.buttonText}>Right</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, 1)}>
+                <Text style={styles.buttonText}>Down</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.button} onPress={() => movePlayer(0, 1)}>
-              <Text style={styles.buttonText}>Down</Text>
-            </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
       {gameWon && (
         <View style={styles.overlay}>
@@ -158,9 +160,13 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: Platform.OS === 'android' ? 25 : 0,
+    // paddingBottom: TAB_BAR_HEIGHT + 20, // Add extra padding at the bottom
   },
   title: {
     fontSize: 24,
@@ -169,17 +175,16 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   gameArea: {
-    flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    paddingBottom: TAB_BAR_HEIGHT,
   },
   mapContainer: {
     width: MAP_WIDTH,
-    height: MAP_HEIGHT - 80,
+    height: MAP_HEIGHT-80,
     overflow: 'hidden',
     borderRadius: 18,
+    // marginBottom: 20, // Add some space between map and controls
   },
   map: {
     width: '100%',
@@ -220,6 +225,8 @@ const styles = StyleSheet.create({
     height: CELL_SIZE * 1.6,
     borderRadius: (CELL_SIZE * 0.6) / 2,
     backgroundColor: 'rgba(0, 0, 255, 0.2)',
+    borderRadius: 10,
+    overflow: 'hidden',
   },
   endIcon: {
     width: CELL_SIZE * 0.6,
@@ -230,7 +237,7 @@ const styles = StyleSheet.create({
   controls: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 20, // Increase bottom margin
   },
   horizontalControls: {
     flexDirection: 'row',
