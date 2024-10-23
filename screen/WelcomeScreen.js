@@ -16,7 +16,7 @@ const WelcomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        Welcome to Total Poland Explorer - your personal guide to the wonders of Poland! Discover the most fascinating places, routes, and cultural treasures of this beautiful country.
+        Welcome to Poland Total Explore - your personal guide to the wonders of Poland! Discover the most fascinating places, routes, and cultural treasures of this beautiful country.
       </Text>
     </View>
   );

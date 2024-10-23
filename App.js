@@ -6,7 +6,7 @@ import { AppContextProvider } from './store/context';
 import WelcomeScreen from './screen/WelcomeScreen';
 import TabHomeScreen from './screen/tab/TabHomeScreen';
 import LinearGradient from 'react-native-linear-gradient';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { TabPolishExplorer, TabQuizScreen } from './screen/tab';
 import {
   StackQuizHistoryScreen,
@@ -26,7 +26,7 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerShown: false,
+        headerShown: false,title:'',
         tabBarBackground: () => (
           <LinearGradient
             colors={['#8A2BE2', '#191970']} // Purple to Deep Blue
@@ -38,28 +38,60 @@ const TabNavigator = () => {
         tabBarStyle: {
           borderTopWidth: 0,
           elevation: 0,
-          height: 60,
+          height: 90,
+          paddingBottom: 0,
         },
         tabBarActiveTintColor: '#FFFFFF',
         tabBarInactiveTintColor: '#CCCCCC',
       }}
     >
-      <Tab.Screen name="TabQuizScreen" component={TabQuizScreen} />
       <Tab.Screen
         name="TabHomeScreen"
         component={TabHomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <View style={{ marginTop: 5 }}>
-              {/* Add your icon component here */}
-            </View>
+            <Image 
+              source={require('./assets/icons/tabBar/home.png')} 
+              style={{ width: 50, height: 50, tintColor: color }}
+            />
           ),
         }}
       />
-      <Tab.Screen name="TabPolishExplorer" component={TabPolishExplorer} />
+      <Tab.Screen 
+        name="TabQuizScreen" 
+        component={TabQuizScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image 
+              source={require('./assets/icons/tabBar/quiz.png')} 
+              style={{ width: 50, height: 50, tintColor: color }}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name="TabPolishExplorer" 
+        component={TabPolishExplorer}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image 
+              source={require('./assets/icons/tabBar/explore.png')} 
+              style={{ width: 50, height: 50, tintColor: color }}
+            />
+          ),
+        }}
+      />
       <Tab.Screen
         name="TabLabirinthGameScreen"
         component={TabLabirinthGameScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image 
+              source={require('./assets/icons/tabBar/labyrinth.png')} 
+              style={{ width: 50, height: 50, tintColor: color }}
+            />
+          ),
+        }}
       />
     </Tab.Navigator>
   );
