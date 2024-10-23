@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions, Animated, Alert } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Dimensions, Animated, Alert, Image } from 'react-native';
 import { useAppContext } from '../../store/context';
 import LinearGradient from 'react-native-linear-gradient';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -155,6 +155,7 @@ const StackQuizCitiesScreen = ({ navigation }) => {
               <Text style={styles.scoreText}>Score: {score}</Text>
               <TouchableOpacity style={styles.hintButton} onPress={handleHint}>
                 {/* <Icon name="lightbulb-o" size={24} color="#FFD700" /> */}
+                <Image source={require('../../assets/image/ui/hint.png')} style={styles.hintIcon} />
                 <Text style={styles.hintText}>{hintCount}</Text>
               </TouchableOpacity>
             </View>
@@ -357,6 +358,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     color: '#FFD700',
+  },
+  hintIcon: {
+    width: 36,
+    height: 36,
+    tintColor: '#FFD700'
   },
 });
 
