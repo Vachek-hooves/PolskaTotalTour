@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   quizContainer: {
-    padding: 20,
+    padding: 10,
     borderRadius: 10,
     width: width * 0.9,
     alignItems: 'center',
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30
   },
   button: {
-    width: width * 0.4,
+    width: width * 0.35,
     height: 60,
     marginBottom: 15,
     borderRadius: 30,
