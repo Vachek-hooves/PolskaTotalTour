@@ -108,7 +108,7 @@ const TabLabirinthGameScreen = () => {
           <View style={styles.gameArea}>
             <View style={styles.mapContainer}>
               <ImageBackground 
-                source={require('../../assets/gamePlay/labyrinth/map.png')} 
+                source={require('../../assets/gamePlay/labyrinth/mapNew1.png')} 
                 style={styles.map} 
                 resizeMode='cover'
               >
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: Platform.OS === 'android' ? 25 : 0,
-    // paddingBottom: TAB_BAR_HEIGHT + 20, // Add extra padding at the bottom
+    
   },
   title: {
     fontSize: 24,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     height: MAP_HEIGHT-80,
     overflow: 'hidden',
     borderRadius: 18,
-    // marginBottom: 20, // Add some space between map and controls
+   
   },
   map: {
     width: '100%',
@@ -204,9 +204,11 @@ const styles = StyleSheet.create({
   },
   cell: {
     width: CELL_SIZE,
-    height: CELL_SIZE,
+    height: CELL_SIZE*1.2,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 10,
+    overflow: 'hidden',
   },
   treeIcon: {
     width: CELL_SIZE * 1.6,
@@ -214,8 +216,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   landmarkIcon: {
-    width: CELL_SIZE * 1.6,
-    height: CELL_SIZE * 1.6,
+    width: CELL_SIZE * 1.8,
+    height: CELL_SIZE * 1.8,
     resizeMode: 'contain',
     borderRadius: 10,
     overflow: 'hidden',
@@ -232,7 +234,7 @@ const styles = StyleSheet.create({
     width: CELL_SIZE * 0.6,
     height: CELL_SIZE * 0.6,
     borderRadius: 6,
-    // backgroundColor: 'rgba(0, 255, 0, 0.7)',
+  
   },
   controls: {
     justifyContent: 'center',
@@ -242,7 +244,7 @@ const styles = StyleSheet.create({
   horizontalControls: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: 150,
+    
   },
   button: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
@@ -251,10 +253,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#FFFFFF',
+   width: 100,
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   overlay: {
     position: 'absolute',
